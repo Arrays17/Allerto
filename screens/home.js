@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {Header} from '../components/header';
+import { TouchableOpacity, View } from 'react-native';
 import ServiceButton from '../components/service';
+const s = require('../styles/styles');
 
 export default function Home() {
+  const title = "Allerto"
+
+
   return (
-    <View style={styles.body}>
+    <View style={s.body}>
       <TouchableOpacity><ServiceButton title="Police" icon='police-badge' /></TouchableOpacity>
       <TouchableOpacity><ServiceButton title="Hospital" icon='hospital-marker' /></TouchableOpacity>
       <TouchableOpacity><ServiceButton title="Fire Station" icon='fire' /></TouchableOpacity>
@@ -15,15 +18,3 @@ export default function Home() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    paddingTop: 10,
-    flexDirection: 'row',
-    backgroundColor: '#212121',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  },
-});
