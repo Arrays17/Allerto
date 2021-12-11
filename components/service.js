@@ -4,9 +4,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default ServiceButton = (props) => {
     return (
-        <Pressable onPress={() => {}}
+        <Pressable onPress={props.onPress}
             style={({pressed}) => [{
                 borderColor: pressed ? "red" : 'white',
+                opacity: pressed ? 0.6 : 1
             },
             styles.service
             ]}>

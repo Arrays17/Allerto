@@ -28,6 +28,7 @@ module.exports = StyleSheet.create({
     
     body: {
         flex: 1,
+        height: "100%",
         paddingTop: 10,
         flexDirection: 'row',
         backgroundColor: '#212121',
