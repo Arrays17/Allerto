@@ -5,15 +5,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const s = require('../styles/styles');
 
 export default Header = () => {
-    const [title, setTitle] = useState("")
-
-    const  Title = (title) => {
-        setTitle(title);
-    }
-
     return (
         <View style={s.header}>
-            <Text style={s.headerTitle}>{title}</Text>
+            <Text style={s.headerTitle}>Allerto</Text>
             <Icon name='menu' size={28} style={s.menuIcon} />
         </View>
     )

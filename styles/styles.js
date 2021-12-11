@@ -4,20 +4,24 @@ import { StyleSheet } from "react-native";
 module.exports = StyleSheet.create({
     // Header Component Styles
     header: {
+        paddingTop: 30,
         justifyContent: "center",
         width: '100%',
-        height: '10%',
+        height: 75,
         backgroundColor: 'black',
     },
     headerTitle: {
         color: 'white',
         textAlign: "center",
-        fontSize: 16,
-        letterSpacing: 2,
+        fontSize: 24,
+        fontWeight: "bold",
+        letterSpacing: 3,
     },
     menuIcon: {
         position: "absolute",
-        right: 12,
+        color: 'white',
+        right: 16,
+        top: 40,
     },
 
     // Home Page Styles

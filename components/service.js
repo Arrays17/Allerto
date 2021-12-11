@@ -1,17 +1,26 @@
 import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default ServiceButton = (props) => {
     return (
-        <View style={styles.service}>
-            <View style={styles.serviceIconContainer}>
-                <Icon style={styles.serviceIcon} name={props.icon} size={90}/>
-            </View>
-            <View style={styles.serviceTitleContainer}>
-                <Text style={styles.serviceTitle}>{props.title}</Text>
-            </View>
-        </View>
+        <Pressable onPress={() => {}}
+            style={({pressed}) => [{
+                borderColor: pressed ? "red" : 'white',
+            },
+            styles.service
+            ]}>
+                {({ pressed }) => (
+                    <View>
+                        <View style={styles.serviceIconContainer}>
+                            <Icon style={pressed ? styles.pressed : styles.serviceIcon} name={props.icon} size={props.title == "Red Cross" ? 130 : 90}/>
+                        </View>
+                        <View style={styles.serviceTitleContainer}>
+                            <Text style={pressed ? styles.pressed : styles.serviceTitle}>{props.title}</Text>
+                        </View>
+                    </View>
+                )}
+        </Pressable>
     )
 }
 
@@ -19,30 +28,26 @@ const styles = StyleSheet.create({
     service: {
         display: "flex",
         minWidth: '45%',
+        maxWidth: '45%',
         minHeight: 175,
+        maxHeight: 175,
         margin: 5,
-        padding: 20,
+        paddingHorizontal: 5,
         alignItems: "center",
         backgroundColor: "gray",
         borderRadius: 20,
-        borderColor: 'white',
         borderWidth: 3,
         shadowColor: 'black',
         shadowOffset: {width: 5, height: -5},
         shadowOpacity: 0.9,
     },
     serviceIconContainer: {
-        flex: 0.8,
+        flex: 0.7,
         alignItems: "center",
-        justifyContent: 'center',
-        color: 'white',
-    },
-    serviceIcon: {
-        flex: 1,
-        color: 'white',
+        justifyContent: "flex-end",
     },
     serviceTitleContainer: {
-        flex: 0.2,
+        flex: 0.3,
         alignItems: "center",
         justifyContent: 'center',
         fontWeight: "bold",
@@ -50,9 +55,23 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
     },
     serviceTitle: {
-        flex: 1,
+        fontSize: 14,
+        textAlign: 'center',
         fontWeight: "bold",
-        color: 'white',
         letterSpacing: 2,
+        color: "white",
+    },
+    serviceIcon: {
+        textAlign: 'center',
+        fontWeight: "bold",
+        letterSpacing: 2,
+        color: "white",
+    },
+    pressed: {
+        opacity: 0.6,
+        textAlign: 'center',
+        fontWeight: "bold",
+        letterSpacing: 2,
+        color: "red",
     }
 })
