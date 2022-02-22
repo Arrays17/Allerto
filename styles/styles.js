@@ -36,4 +36,16 @@ module.exports = StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap'
     },
+
+    // Emergency List Screen Styles\
+
+    emergencyListScreenBody: {
+        flex: 1,
+        padding: 10,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    emergencyListScreenText: {
+        fontSize: 20,
+    },
 })
