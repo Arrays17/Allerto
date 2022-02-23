@@ -10,8 +10,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthStack.Navigator>
-        <AuthStack.Screen name="Home" component={Home} options={{title: "Allerto"}}/>
-        <AuthStack.Screen name="EmergencyList" component={EmergencyList} options={{title: "Stations"}}/>
+        <AuthStack.Screen name="Home" component={Home} options={{title: "Allerto",
+            headerTitleAlign:'center'}}/>
+        <AuthStack.Screen name="EmergencyList" component={EmergencyList} 
+            options={{headerTitleAlign:'center'}}/>
       </AuthStack.Navigator>
     </NavigationContainer>
   );
