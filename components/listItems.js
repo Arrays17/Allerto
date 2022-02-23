@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
         width: (Dimensions.get('window').width - 15),
         paddingHorizontal: 10,
         paddingVertical: 5,
-        backgroundColor: "orange"
+        backgroundColor: "orange",
+        marginBottom: 15
     },
     itemName: {
         fontSize: 20,
