@@ -1,29 +1,54 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
+const apiKey =  process.env.GOOGLE_API_KEY
+const URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
+const detailsURL = 'https://maps.googleapis.com/maps/api/place/details/json?fields=name,formatted_address,geometry/location,vicinity,formatted_phone_number&place_id='
 
 export default fetchPlaces = (coordinates, keyword) => {
-
     let {latitude, longitude} = coordinates;
+    const placesID = []
 
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + ',' + longitude + 
         '&rankby=distance' + 
         '&type=' + keyword + 
-        '&key=' + process.env.GOOGLE_API_KEY;
+        '&key=' + apiKey;
 
-    return (
-        [
-            {
-                id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-                title: 'First Item',
-            },
-            {
-                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-                title: 'Second Item',
-            },
-            {
-                id: '58694a0f-3da1-471f-bd96-145571e29d72',
-                title: 'Third Item',
-            }]
-    )
+        return new Promise(function(resolve, reject){
+            fetch(URL + `${latitude},${longitude}&rankby=distance&type=${keyword}&key=${apiKey}`)
+            .then(res => res.json())
+            .then(res => {
+                for (let place of res.results){
+                    let id = place.place_id
+                    placesID.push(id)
+                }
+
+                const places = []
+                
+                placesID.map((id) => {
+                    fetch(detailsURL+`${id}&key=${apiKey}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        var place = {}
+                        var lat = res.result.geometry.location.lat;
+                        var lng = res.result.geometry.location.lng;
+                        var coordinate = {
+                        latitude: lat,
+                        longitude: lng,
+                        }
+                        place['id'] = id
+                        place['name'] = res.result.name
+                        place['address'] = res.result.vicinity
+                        place['number'] = res.result.formatted_phone_number
+                        place['coordinate'] = coordinate
+
+                        places.push(place)
+
+                        if (placesID.length == places.length){
+                            resolve(places) 
+                        }
+                    })
+                })
+            })
+        })
 }
 

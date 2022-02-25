@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Button ,Text, FlatList } from 'react-native'
+import { Text, FlatList, Button, TouchableOpacity } from 'react-native'
 import ListItem from '../components/listItems'
 import fetchPlaces from '../apis/fetchPlaces'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,81 +9,106 @@ const s = require('../styles/styles')
 export default function emergencyContacts({route, navigation}) {
     const {headerTitle, keyword} = route.params;
     const [locationEnabled, setLocationEnabled] = useState(false)
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+    const [location, setLocation] = useState(null)
+    const [errorMsg, setErrorMsg] = useState(null)
+    const [fetching, setFetching] = useState(false)
     const [Places, setPlaces] = useState(null)
+
+    const checkServices = async () => {
+        let locationStatus = await Location.hasServicesEnabledAsync()
+        setLocationEnabled(locationStatus)
+    }
 
     const TurnOnGPS = async () => {
         await Location.getCurrentPositionAsync().catch(()=>{})
-        let locationStatus = await Location.hasServicesEnabledAsync()
-        if (locationStatus) {
-            setLocationEnabled(true)
-            setErrorMsg(null)
-        }
+        checkServices()
     }
 
-    const setupLocation = () => {
-        (async () => {
-            let {coords} = await Location.getCurrentPositionAsync().catch(()=>{setErrorMsg('Sorry... We\'re having trouble getting your location...')})
-    
-            if (coords)
-            setLocation(coords)
-        })()
+    const setupLocation = async () => {
+        let { coords } = await Location.getCurrentPositionAsync().catch(()=>{setErrorMsg('Sorry... We\'re having trouble getting your location...')})
+        return coords
     }
+
+    const setupPlaces = async () => {
+        let places = await fetchPlaces(location, keyword).catch(()=>{})
+        console.log(places)
+        return places
+    }
+    
+    (async () => {
+        await checkServices()
+
+        if ((Places == null || Places === 'undefined' || JSON.stringify(Places) === '[]') && !fetching && location) {
+            setFetching(true)
+            await fetchPlaces(location, keyword)
+            .then(function(places) {
+                console.log(places)
+                setPlaces(places)
+            })
+        }
+    })()
 
     useEffect(() => {
         navigation.setOptions({title: headerTitle});
 
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let { status } = await Location.requestForegroundPermissionsAsync()
             if (status !== 'granted') {
-              setErrorMsg('Permission to access location was denied');
+              setErrorMsg('Permission to access location was denied')
             }
     
-            Location.setGoogleApiKey(process.env.GOOGLE_API_KEY);
-
+            Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
+    
             await Location.getCurrentPositionAsync().catch(()=>{})
+        })()
+    }, [])
 
-            let locationStatus = await Location.hasServicesEnabledAsync()
-            if (locationStatus) {
-                setLocationEnabled(true)
-                setErrorMsg(null)
-                let {coords} = await Location.getCurrentPositionAsync().catch(()=>{setErrorMsg('Sorry... We\'re having trouble getting your location...')})
-
-                if (coords) {
-                    setLocation(coords)
-                }
-            } else {
-                setErrorMsg('Please turn on device\'s GPS')
-            }
-          })()
-        }, [])
-
-        if (locationEnabled && !Places && location) {
-            setPlaces(fetchPlaces(location, keyword))
+    useEffect(()=>{
+        console.log('locationEnabled? : ', locationEnabled)
+        if (!location && locationEnabled) {
+            setErrorMsg(null)
+            setupLocation(coords => coords.json())
+            .then(coords => {
+                setLocation({
+                    latitude: coords.latitude,
+                    longitude: coords.longitude
+                })
+            })
+        } else if (!location && !locationEnabled) {
+            setErrorMsg('Please turn on GPS')
         }
+    }, [locationEnabled])
 
-        
-        console.log(locationEnabled)
-        console.log(location)
+    useEffect(()=>{
+        console.log('location : ', location)
+    }, [location])
+
+    useEffect(()=>{
         console.log(Places)
+    }, [Places])
 
-        let text = 'Loading...';
-        if (errorMsg) {
-            text = errorMsg;
-        }
+    let text = 'Loading...';
+    if (errorMsg) {
+        text = errorMsg;
+    }
 
-        const renderItem = ({item}) => (<ListItem Name={item.title}/>)
+    const renderItem = ({item}) => (<ListItem name={item.name} address={item.address} number={item.number}/>)
 
     return (
         <SafeAreaView style={s.emergencyListScreenBody}>
-            {!Places ? <Text style={s.emergencyListScreenText}>{text}</Text> : 
-            <FlatList
-                data = {Places}
-                renderItem = {renderItem}
-            />}
-            {text == "Please turn on device's GPS" ? <Button title={"TURN ON GPS"} onPress={TurnOnGPS}/> : null}
-            {locationEnabled && !Places ? setupLocation() : null}
+            {Places != null ? 
+                <FlatList
+                    data = {Places}
+                    renderItem = {renderItem}
+                    keyExtractor = {renderItem.id}
+                /> 
+                :
+                <Text style={s.emergencyListScreenText}>{text}</Text>
+            }
+            {text == "Please turn on GPS" ? 
+                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
+                    <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
+                </TouchableOpacity> : null}
         </SafeAreaView>
     )
 }

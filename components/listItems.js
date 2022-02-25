@@ -5,9 +5,9 @@ export default ListItem = (props) => {
     return (
         <Pressable>
             <View style={styles.itemContainer}>
-                <Text style={styles.itemName}>{props.Name}</Text>
-                <Text style={styles.itemDistance}>{props.Distance} away</Text>
-                <Text style={styles.itemNumber}>{props.Number}</Text>
+                <Text style={styles.itemName}>{props.name}</Text>
+                <Text style={styles.itemDistance}>{props.distance} away</Text>
+                <Text style={styles.itemNumber}>{props.number ? props.number : props.address}</Text>
             </View>
         </Pressable>
     )
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         backgroundColor: "orange",
-        marginBottom: 15
+        marginBottom: 10,
+        borderRadius: 20
     },
     itemName: {
         fontSize: 20,
