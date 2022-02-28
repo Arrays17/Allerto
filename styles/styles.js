@@ -46,5 +46,14 @@ module.exports = StyleSheet.create({
     },
     emergencyListScreenText: {
         fontSize: 20,
+        margin: 10
     },
+    emergencyListScreenButton: {
+        backgroundColor: 'orange',
+        padding: 15,
+    },
+    buttonText: {
+        fontWeight: '400',
+        fontSize: 16
+    }
 })
