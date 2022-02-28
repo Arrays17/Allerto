@@ -6,7 +6,7 @@ export default ServiceButton = (props) => {
     return (
         <Pressable onPress={props.onPress}
             style={({pressed}) => [{
-                borderColor: pressed ? "red" : 'white',
+                borderColor: pressed ? "orange" : 'white',
                 opacity: pressed ? 0.6 : 1
             },
             styles.service
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "red",
+        color: "orange",
     }
 })

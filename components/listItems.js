@@ -1,13 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 
-export default Item = (props) => {
+export default ListItem = (props) => {
     return (
         <Pressable>
             <View style={styles.itemContainer}>
-                <Text style={styles.itemName}>{props.Name}"\n"</Text>
-                <Text style={styles.itemDistance}>{props.Distance} away"\n"</Text>
-                <Text style={styles.itemNumber}>{props.Number}</Text>
+                <Text style={styles.itemName}>{props.name}</Text>
+                <Text style={styles.itemDistance}>{props.distance} away</Text>
+                <Text style={styles.itemNumber}>{props.number ? props.number : props.address}</Text>
             </View>
         </Pressable>
     )
@@ -15,19 +15,22 @@ export default Item = (props) => {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width: '100%',
+        width: (Dimensions.get('window').width - 15),
         paddingHorizontal: 10,
         paddingVertical: 5,
+        backgroundColor: "orange",
+        marginBottom: 10,
+        borderRadius: 20
     },
     itemName: {
-        fontSize: '1.5rem',
+        fontSize: 20,
         fontWeight: "bold",
     },
     itemDistance: {
-        fontSize: "0.75rem",
+        fontSize: 16,
         fontStyle: "italic",
     },
     itemNumber: {
-        fontSize: "1rem",
+        fontSize: 20,
     },
 })
