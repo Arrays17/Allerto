@@ -6,7 +6,7 @@ export default ListItem = (props) => {
         <Pressable>
             <View style={styles.itemContainer}>
                 <Text style={styles.itemName}>{props.name}</Text>
-                <Text style={styles.itemDistance}>{props.distance} away</Text>
+                <Text style={styles.itemDistance}>{props.distance.kilometers}km away</Text>
                 <Text style={styles.itemNumber}>{props.number ? props.number : props.address}</Text>
             </View>
         </Pressable>

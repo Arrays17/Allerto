@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
+import getDistanceUsingLatLng from '../utils/getDistanceUsingLatLng'
 
 const apiKey =  process.env.GOOGLE_API_KEY
-const URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
+const URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=en&location='
 const detailsURL = 'https://maps.googleapis.com/maps/api/place/details/json?fields=name,formatted_address,geometry/location,vicinity,formatted_phone_number&place_id='
 
 export default fetchPlaces = (coordinates, keyword) => {
@@ -35,11 +36,13 @@ export default fetchPlaces = (coordinates, keyword) => {
                         latitude: lat,
                         longitude: lng,
                         }
+                        var distance = getDistanceUsingLatLng(latitude, longitude, lat, lng)
                         place['id'] = id
                         place['name'] = res.result.name
                         place['address'] = res.result.vicinity
                         place['number'] = res.result.formatted_phone_number
                         place['coordinate'] = coordinate
+                        place['distance'] = distance
 
                         places.push(place)
 
