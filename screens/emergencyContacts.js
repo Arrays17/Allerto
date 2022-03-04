@@ -92,7 +92,7 @@ export default function emergencyContacts({route, navigation}) {
         text = errorMsg;
     }
 
-    const renderItem = ({item}) => (<ListItem name={item.name} address={item.address} number={item.number}/>)
+    const renderItem = ({item}) => (<ListItem name={item.name} address={item.address} number={item.number} distance={item.distance}/>)
 
     return (
         <SafeAreaView style={s.emergencyListScreenBody}>
