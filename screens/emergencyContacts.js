@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import { Text, FlatList, Button, TouchableOpacity } from 'react-native'
+import { Text, FlatList, Button, TouchableOpacity, View } from 'react-native'
 import ListItem from '../components/listItems'
 import fetchPlaces from '../apis/fetchPlaces'
+import getAddress from '../apis/getAddress'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Location from 'expo-location'
 const s = require('../styles/styles')
@@ -10,6 +11,7 @@ export default function emergencyContacts({route, navigation}) {
     const {headerTitle, keyword} = route.params;
     const [locationEnabled, setLocationEnabled] = useState(false)
     const [location, setLocation] = useState(null)
+    const [address, setAddress] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
     const [fetching, setFetching] = useState(false)
     const [Places, setPlaces] = useState(null)
@@ -29,10 +31,9 @@ export default function emergencyContacts({route, navigation}) {
         return coords
     }
 
-    const setupPlaces = async () => {
-        let places = await fetchPlaces(location, keyword).catch(()=>{})
-        console.log(places)
-        return places
+    const setupAddress = async () => {
+        let address = await getAddress(location).catch(()=>{})
+        return address
     }
     
     (async () => {
@@ -42,7 +43,6 @@ export default function emergencyContacts({route, navigation}) {
             setFetching(true)
             await fetchPlaces(location, keyword)
             .then(function(places) {
-                console.log(places)
                 setPlaces(places)
             })
         }
@@ -80,11 +80,17 @@ export default function emergencyContacts({route, navigation}) {
     }, [locationEnabled])
 
     useEffect(()=>{
+        if (location && address == null) {            
+            setupAddress(address => address.json())
+            .then(address => {
+                setAddress(address)
+            })
+        }
         console.log('location : ', location)
     }, [location])
 
     useEffect(()=>{
-        console.log(Places)
+        //console.log(Places)
     }, [Places])
 
     let text = 'Loading...';
@@ -95,20 +101,25 @@ export default function emergencyContacts({route, navigation}) {
     const renderItem = ({item}) => (<ListItem name={item.name} address={item.address} number={item.number} distance={item.distance}/>)
 
     return (
-        <SafeAreaView style={s.emergencyListScreenBody}>
+        <View style={s.emergencyListScreenBody}>
             {Places != null ? 
-                <FlatList
-                    data = {Places}
-                    renderItem = {renderItem}
-                    keyExtractor = {renderItem.id}
-                /> 
-                :
-                <Text style={s.emergencyListScreenText}>{text}</Text>
+                <>
+                    <View>
+                        <Text>Your Current Location:</Text>
+                        <Text>{address}</Text>
+                    </View>
+                    <FlatList
+                        data = {Places}
+                        renderItem = {renderItem}
+                        keyExtractor = {renderItem.id}
+                    /> 
+                </>
+                : <Text style={s.emergencyListScreenText}>{text}</Text>
             }
             {text == "Please turn on GPS" ? 
                 <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
                     <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
                 </TouchableOpacity> : null}
-        </SafeAreaView>
+        </View>
     )
 }
