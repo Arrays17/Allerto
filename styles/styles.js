@@ -68,7 +68,7 @@ module.exports = StyleSheet.create({
         letterSpacing: 2,
     },
     serviceTitle: {
-        fontSize: 14,
+        fontSize: 16,
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,

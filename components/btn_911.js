@@ -6,7 +6,7 @@ export default btn_911 = () => {
 
 
     return (
-        <TouchableOpacity activeOpacity={0.7} onLongPress={()=>call911()} style={s.btn_911}>
+        <TouchableOpacity activeOpacity={0.7} onPress={()=>call911()} style={s.btn_911}>
             <Text style={s.text_911}>911</Text>
         </TouchableOpacity>
     )
