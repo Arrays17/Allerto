@@ -7,8 +7,7 @@ module.exports = StyleSheet.create({
         paddingTop: 30,
         justifyContent: "center",
         width: '100%',
-        height: 75,
-        backgroundColor: 'black',
+        backgroundColor: 'orange',
     },
     headerTitle: {
         color: 'white',
