@@ -1,13 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, Pressable, Linking, Platform } from 'react-native';
+import { View, Text, Pressable, Linking, Platform } from 'react-native';
+
+const s = require('../styles/styles')
 
 export default ListItem = (props) => {
     return (
         <Pressable onPress={() => callNumber(props.number)} onLongPress={openModal}>
-            <View style={styles.itemContainer}>
-                <Text style={styles.itemName}>{props.name}</Text>
-                <Text style={styles.itemDistance}>{props.distance.kilometers}km away</Text>
-                <Text style={styles.itemNumber}>{props.number ? props.number : props.address}</Text>
+            <View style={s.itemContainer}>
+                <Text style={s.itemName}>{props.name}</Text>
+                <Text style={s.itemDistance}>{props.distance.kilometers}km away</Text>
+                <Text style={s.itemNumber}>{props.number ? props.number : props.address}</Text>
             </View>
         </Pressable>
     )
@@ -39,25 +41,3 @@ function callNumber(number) {
 function openModal() {
     console.log('Open Modal')
 }
-
-const styles = StyleSheet.create({
-    itemContainer: {
-        width: (Dimensions.get('window').width - 15),
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        backgroundColor: "orange",
-        marginBottom: 10,
-        borderRadius: 20
-    },
-    itemName: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    itemDistance: {
-        fontSize: 16,
-        fontStyle: "italic",
-    },
-    itemNumber: {
-        fontSize: 20,
-    },
-})

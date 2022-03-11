@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import { Text, FlatList, Button, TouchableOpacity, View } from 'react-native'
+import React, {useEffect, useState, useRef} from 'react'
+import { Text, FlatList, TouchableOpacity, View } from 'react-native'
 import ListItem from '../components/listItems'
 import fetchPlaces from '../apis/fetchPlaces'
 import getAddress from '../apis/getAddress'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Location from 'expo-location'
 const s = require('../styles/styles')
 
@@ -50,22 +49,28 @@ export default function emergencyContacts({route, navigation}) {
 
     useEffect(() => {
         navigation.setOptions({title: headerTitle});
+        let mounted = true;
 
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync()
             if (status !== 'granted') {
-              setErrorMsg('Permission to access location was denied')
+                if (!mounted) return null
+                setErrorMsg('Permission to access location was denied')
             }
     
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
     
             await Location.getCurrentPositionAsync().catch(()=>{})
         })()
+
+        return () => {mounted=false}
     }, [])
 
     useEffect(()=>{
         console.log('locationEnabled? : ', locationEnabled)
+        let mounted = true;
         if (!location && locationEnabled) {
+            if (!mounted) return null;
             setErrorMsg(null)
             setupLocation(coords => coords.json())
             .then(coords => {
@@ -75,18 +80,23 @@ export default function emergencyContacts({route, navigation}) {
                 })
             })
         } else if (!location && !locationEnabled) {
+            if (!mounted) return null;
             setErrorMsg('Please turn on GPS')
         }
+        return () => {mounted = false}
     }, [locationEnabled])
 
     useEffect(()=>{
+        let mounted = true;
         if (location && address == null) {            
+            if (!mounted) return null;
             setupAddress(address => address.json())
             .then(address => {
                 setAddress(address)
             })
         }
         console.log('location : ', location)
+        return () => {mounted=false}
     }, [location])
 
     useEffect(()=>{
