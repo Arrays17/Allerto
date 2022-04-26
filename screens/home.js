@@ -1,35 +1,21 @@
 import React from 'react';
-import { View } from 'react-native';
-import ServiceButton from '../components/service';
-const s = require('../styles/styles');
+import { createStackNavigator } from '@react-navigation/stack';
+import Emergency from './emergency';
+import EmergencyList from './emergencyContacts';
 
-export default function Home({navigation}) {
+const AuthStack = createStackNavigator();
+
+export default function Home() {
   return (
-    <View style={s.body}>
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {
-        headerTitle: "Police Stations",
-        keyword: "police"
-        }
-        )} title="Police" icon='police-badge' />
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {
-        headerTitle: "Hospital",
-        keyword: "hospital"
-        }
-        )} title="Hospital" icon='hospital-marker' />
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {
-          headerTitle: "Fire Stations",
-          keyword: "fire_station"
-          }
-          )} title="Fire Station" icon='fire' />
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {headerTitle: "Road and Traffic"})} title="Road and Traffic" icon='traffic-cone' />
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {headerTitle: "Red Cross Hotlines"})} title="Red Cross" icon='hospital' />
-      <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-        {headerTitle: "Disaster Hotlines"})} title="National Disaster" icon='bell' />
-    </View>
+    <AuthStack.Navigator>
+      <AuthStack.Screen name="Home" component={Emergency} options={{title: "Allerto",
+          headerTitleAlign:'center', 
+          headerStyle: {backgroundColor: 'orange'},
+          headerTitleStyle: {letterSpacing: 5}}}/>
+      <AuthStack.Screen name="EmergencyList" component={EmergencyList} 
+          options={{headerTitleAlign:'center', 
+          headerStyle: {backgroundColor: 'orange'},
+          headerTitleStyle: {letterSpacing: 3}}}/>
+    </AuthStack.Navigator>
   );
 }
