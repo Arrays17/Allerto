@@ -17,7 +17,7 @@ export default ListItem = (props) => {
 
 function callNumber(number) {
     console.log('Calling ' + number)
-    number = '(802) 287-9702' //for testing only, delete for production
+    //number = '(802) 287-9702' //for testing only, delete for production
     let phoneNumber = ''
     if (Platform.OS !== 'android'){
         phoneNumber = `telprompt:${number}`
