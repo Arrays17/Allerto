@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
     },
 
     // Home Page Styles
-    
+
     body: {
         flex: 1,
         height: "100%",
@@ -155,4 +155,23 @@ module.exports = StyleSheet.create({
     itemNumber: {
         fontSize: 20,
     },
+
+    // tips
+    tips: {
+        paddingHorizontal: 20,
+        marginVertical: 20,
+    },
+    tipTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    tipContent: {
+        textAlign: 'justify',
+        lineHeight: 25,
+    },
+    tipSource:{
+        fontStyle: "italic",
+        textAlign: "right",
+    },
+
 })

@@ -6,6 +6,7 @@ import Home from './screens/home';
 import Alerts from './screens/alerts';
 import Tracking from './screens/tracking';
 import Settings from './screens/settings';
+import AllerTips from './screens/allerTips';
 const s = require('./styles/styles');
 
 const Module = createBottomTabNavigator();
@@ -18,8 +19,8 @@ export default function App() {
         screenOptions={{
           tabBarActiveTintColor: 'orange',
         }}>
-        <Module.Screen 
-          name="Alerts" 
+        <Module.Screen
+          name="Alerts"
           component={Alerts}
           options={{
             tabBarLabel: 'Alerts',
@@ -27,8 +28,8 @@ export default function App() {
               <MaterialCommunityIcons name="alert" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen 
-          name="Track Me" 
+        <Module.Screen
+          name="Track Me"
           component={Tracking}
           options={{
             tabBarLabel: 'Track Me',
@@ -36,8 +37,8 @@ export default function App() {
               <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen 
-          name="Emergency" 
+        <Module.Screen
+          name="Emergency"
           component={Home}
           options={{
             tabBarLabel: 'Emergency',
@@ -45,17 +46,17 @@ export default function App() {
               <MaterialCommunityIcons name="phone" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen 
-          name="AllerTIPS" 
-          component={Home}
+        <Module.Screen
+          name="AllerTIPS"
+          component={AllerTips}
           options={{
             tabBarLabel: 'AllerTIPS',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="lightbulb-on" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen 
-          name="Settings" 
+        <Module.Screen
+          name="Settings"
           component={Settings}
           options={{
             tabBarLabel: 'Settings',
