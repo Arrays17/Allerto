@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AllerTips from './allertips_Menu';
+import Menu from './allertips_Menu';
 import Earthquake from './tip_earthquake';
 import Landslide from './tip_landslide';
 import Fire from './tip_fire';
@@ -15,7 +15,8 @@ const AuthStack = createStackNavigator();
 export default function AllerTIPS_Nav() {
   return (
     <AuthStack.Navigator>
-        <AuthStack.Screen name="AllerTIPS" component={AllerTips} options={{
+        <AuthStack.Screen name="Menu" component={Menu} options={{
+            title: "AllerTIPS",
             headerTitleAlign:'center',
             headerStyle: {backgroundColor: 'orange'},
             headerTitleStyle: {letterSpacing: 5}}}/>
