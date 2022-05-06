@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen name="Home" component={Emergency} options={{title: "Allerto",
-          headerTitleAlign:'center', 
-          headerStyle: {backgroundColor: 'orange'},
+          headerTitleAlign:'center',
+          headerStyle: {backgroundColor: 'orange', },
           headerTitleStyle: {letterSpacing: 5}}}/>
-      <AuthStack.Screen name="EmergencyList" component={EmergencyList} 
-          options={{headerTitleAlign:'center', 
+      <AuthStack.Screen name="EmergencyList" component={EmergencyList}
+          options={{headerTitleAlign:'center',
           headerStyle: {backgroundColor: 'orange'},
           headerTitleStyle: {letterSpacing: 3}}}/>
     </AuthStack.Navigator>
