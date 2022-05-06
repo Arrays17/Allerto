@@ -1,6 +1,6 @@
 import { Text, ScrollView } from 'react-native';
 import React from 'react';
-const s = require('../styles/styles');
+const s = require('../../styles/styles');
 
 export default function fire() {
   return (

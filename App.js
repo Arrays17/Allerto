@@ -6,7 +6,7 @@ import Home from './screens/home';
 import Alerts from './screens/alerts';
 import Tracking from './screens/tracking';
 import Settings from './screens/settings';
-import AllerTips from './screens/allerTips';
+import AllerTips from './screens/allertips/allertips';
 const s = require('./styles/styles');
 
 const Module = createBottomTabNavigator();
@@ -16,8 +16,10 @@ export default function App() {
     <NavigationContainer>
       <Module.Navigator
         initialRouteName='Emergency'
+        backBehavior='history'
         screenOptions={{
           tabBarActiveTintColor: 'orange',
+          headerShown: false
         }}>
         <Module.Screen
           name="Alerts"
