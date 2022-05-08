@@ -2,12 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from './screens/home';
+import Home from './routes/emergency';
 import Alerts from './screens/alerts';
 import Tracking from './screens/tracking';
 import Settings from './screens/settings';
-import AllerTips from './screens/allertips/allertips';
-const s = require('./styles/styles');
+import AllerTips from './routes/allertips';
 
 const Module = createBottomTabNavigator();
 
@@ -18,7 +17,7 @@ export default function App() {
         initialRouteName='Emergency'
         backBehavior='history'
         screenOptions={{
-          tabBarActiveTintColor: 'orange',
+          tabBarActiveTintColor: 'darkorange',
           headerShown: false
         }}>
         <Module.Screen

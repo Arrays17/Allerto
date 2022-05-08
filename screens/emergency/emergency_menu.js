@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import ServiceButton from '../components/service';
-import Button911 from '../components/btn_911';
-const s = require('../styles/styles');
+import ServiceButton from '../../components/service';
+import Button911 from '../../components/btn_911';
+const s = require('../../styles/styles');
 
 export default function Emergency({navigation}) {
     return (
@@ -23,8 +23,8 @@ export default function Emergency({navigation}) {
           {
             headerTitle: "Fire Stations",
             keyword: "fire_station"
-            }
-            )} title="Fire Station" icon='fire' />
+          }
+          )} title="Fire Station" icon='fire' />
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
           {headerTitle: "Road and Traffic"})} title="Road and Traffic" icon='traffic-cone' />
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 

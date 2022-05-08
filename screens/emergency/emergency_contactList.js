@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { Text, FlatList, TouchableOpacity, View } from 'react-native'
-import ListItem from '../components/listItems'
-import fetchPlaces from '../apis/fetchPlaces'
-import getAddress from '../apis/getAddress'
+import ListItem from '../../components/listItems'
+import fetchPlaces from '../../apis/fetchPlaces'
+import getAddress from '../../apis/getAddress'
 import * as Location from 'expo-location'
-const s = require('../styles/styles')
+const s = require('../../styles/styles')
 
-export default function emergencyContacts({route, navigation}) {
-    const {headerTitle, keyword} = route.params;
+export default function emergencyContacts(key) {
+    const {keyword} = key;
     const [locationEnabled, setLocationEnabled] = useState(false)
     const [location, setLocation] = useState(null)
     const [address, setAddress] = useState(null)
@@ -48,7 +48,6 @@ export default function emergencyContacts({route, navigation}) {
     })()
 
     useEffect(() => {
-        navigation.setOptions({title: headerTitle});
         let mounted = true;
 
         (async () => {
@@ -98,10 +97,6 @@ export default function emergencyContacts({route, navigation}) {
         console.log('location : ', location)
         return () => {mounted=false}
     }, [location])
-
-    useEffect(()=>{
-        //console.log(Places)
-    }, [Places])
 
     let text = 'Loading...';
     if (errorMsg) {

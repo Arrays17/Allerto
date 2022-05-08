@@ -117,16 +117,18 @@ module.exports = StyleSheet.create({
     // Emergency List Screen Styles\
 
     emergencyListScreenBody: {
+        backgroundColor: '#212121',
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     emergencyListScreenText: {
+        color: 'white',
         fontSize: 20,
         margin: 10
     },
     emergencyListScreenButton: {
-        backgroundColor: 'orange',
+        backgroundColor: 'darkorange',
         padding: 15,
     },
     buttonText: {
@@ -140,6 +142,7 @@ module.exports = StyleSheet.create({
         width: (Dimensions.get('window').width - 15),
         paddingHorizontal: 10,
         paddingVertical: 5,
+        color: 'white',
         backgroundColor: "orange",
         marginBottom: 10,
         borderRadius: 20
