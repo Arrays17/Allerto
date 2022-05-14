@@ -2,26 +2,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 module.exports = StyleSheet.create({
-    // Header Component Styles
-    header: {
-        paddingTop: 30,
-        justifyContent: "center",
-        width: '100%',
-        backgroundColor: 'orange',
-    },
-    headerTitle: {
-        color: 'white',
-        textAlign: "center",
-        fontSize: 24,
-        fontWeight: "bold",
-        letterSpacing: 3,
-    },
-    menuIcon: {
-        position: "absolute",
-        color: 'white',
-        right: 16,
-        top: 40,
-    },
+    // Common Components Styles
 
     switchContainer: {
         width: Dimensions.get('window').width,
@@ -45,8 +26,6 @@ module.exports = StyleSheet.create({
         position: 'absolute',
         right: 10,
     },
-
-    // Home Page Styles
 
     body: {
         flex: 1,

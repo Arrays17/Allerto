@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Text, FlatList, TouchableOpacity, View } from 'react-native'
 import ListItem from '../../components/listItems'
 import fetchPlaces from '../../apis/fetchPlaces'
@@ -26,7 +26,7 @@ export default function emergencyContacts(key) {
     }
 
     const setupLocation = async () => {
-        let { coords } = await Location.getCurrentPositionAsync().catch(()=>{setErrorMsg('Sorry... We\'re having trouble getting your location...')})
+        let { coords } = await Location.getCurrentPositionAsync({accuracy: 4}).catch(()=>{setErrorMsg('Sorry... We\'re having trouble getting your location...')})
         return coords
     }
 
@@ -110,8 +110,8 @@ export default function emergencyContacts(key) {
             {Places != null ? 
                 <>
                     <View>
-                        <Text>Your Current Location:</Text>
-                        <Text>{address}</Text>
+                        <Text style={s.text}>Your Current Location:</Text>
+                        <Text style={s.text}>{address}</Text>
                     </View>
                     <FlatList
                         data = {Places}

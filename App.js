@@ -71,6 +71,11 @@ export default function App() {
           name="Settings"
           component={Settings}
           options={{
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'orange',
+            },
             tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="cog" color={color} size={size} />
