@@ -24,6 +24,12 @@ export default function App() {
           name="Alerts"
           component={Alerts}
           options={{
+            headerShown: true,
+            headerTitle: "Disaster Alerts and Notifications",
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'orange',
+            },
             tabBarLabel: 'Alerts',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="alert" color={color} size={size} />
@@ -33,6 +39,11 @@ export default function App() {
           name="Track Me"
           component={Tracking}
           options={{
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'orange',
+            },
             tabBarLabel: 'Track Me',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />

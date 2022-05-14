@@ -6,7 +6,7 @@ const s = require('../../styles/styles');
 
 export default function Emergency({navigation}) {
     return (
-      <View style={s.body}>
+      <View style={s.menu}>
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
           {
           headerTitle: "Police Stations",

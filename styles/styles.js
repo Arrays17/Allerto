@@ -23,17 +23,60 @@ module.exports = StyleSheet.create({
         top: 40,
     },
 
+    switchContainer: {
+        width: Dimensions.get('window').width,
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 0,
+        padding: 15,
+        flexDirection: 'row',
+        alignItems: "center"
+    },
+
+    switchText: {
+        fontSize: 16,
+    },
+
+    switch: {
+        transform: [{
+            scaleX: 1.25}, 
+            {scaleY: 1.25
+        }],
+        position: 'absolute',
+        right: 10,
+    },
+
     // Home Page Styles
 
     body: {
         flex: 1,
-        height: "100%",
-        paddingTop: 10,
-        flexDirection: 'row',
+        color: 'white',
         backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
-        flexWrap: 'wrap'
+    },
+
+    menu: {
+        flexDirection: "row",
+        height: "100%",
+        paddingTop: 10,
+        flexWrap: 'wrap',
+        backgroundColor: '#212121',
+        justifyContent: 'center',
+    },
+
+    text: {
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+
+    button: {
+        padding: 15,
+        backgroundColor: 'orange',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 20,
     },
 
     // Service Button Styles
@@ -132,8 +175,9 @@ module.exports = StyleSheet.create({
         padding: 15,
     },
     buttonText: {
-        fontWeight: '400',
-        fontSize: 16
+        fontWeight: "bold",
+        fontSize: 16,
+        color: 'white',
     },
 
     // List Items Style

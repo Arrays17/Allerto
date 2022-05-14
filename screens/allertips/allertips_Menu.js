@@ -5,7 +5,7 @@ const s = require('../../styles/styles');
 export default function allerTips({navigation}){
     return (
         <ScrollView>
-            <View  style={s.body}>
+            <View  style={s.menu}>
                 <ServiceButton onPress={()=>navigation.navigate("Earthquake")} 
                     title="Earthquake" 
                     icon='earth' />
