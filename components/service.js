@@ -13,14 +13,14 @@ export default ServiceButton = (props) => {
             s.service
             ]}>
                 {({ pressed }) => (
-                    <View>
+                    <>
                         <View style={s.serviceIconContainer}>
                             <Icon style={pressed ? s.pressed : s.serviceIcon} name={props.icon} size={props.title == "Red Cross" ? 130 : 90}/>
                         </View>
                         <View style={s.serviceTitleContainer}>
                             <Text style={pressed ? s.pressed : s.serviceTitle}>{props.title}</Text>
                         </View>
-                    </View>
+                    </>
                 )}
         </Pressable>
     )
