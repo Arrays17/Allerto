@@ -59,7 +59,7 @@ export default function emergencyContacts(key) {
     
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
     
-            await Location.getCurrentPositionAsync().catch(()=>{})
+            await Location.getCurrentPositionAsync({accuracy: 4}).catch(()=>{})
         })()
 
         return () => {mounted=false}

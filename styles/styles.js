@@ -58,6 +58,14 @@ module.exports = StyleSheet.create({
         borderRadius: 20,
     },
 
+    textInput: {
+        padding: 10,
+        margin: 5,
+        borderWidth: 1,
+        borderColor: 'lightgray',
+        borderRadius: 10,
+    },
+
     // Service Button Styles
 
     service: {
@@ -157,6 +165,7 @@ module.exports = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16,
         color: 'white',
+        textAlign: "center",
     },
 
     // List Items Style
