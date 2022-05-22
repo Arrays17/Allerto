@@ -8,7 +8,7 @@ import EmergencyList from '../routes/emergency_contactList';
 
 const AuthStack = createStackNavigator();
 
-export default function Home() {
+export default function Emergency() {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen name="Home" component={Menu} 

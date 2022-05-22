@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 const s = require('../../styles/styles');
 
-export default function allerTips({navigation}){
+export default function AllerTips({navigation}){
     return (
         <ScrollView>
             <View  style={s.menu}>

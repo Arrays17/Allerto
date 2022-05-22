@@ -2,7 +2,7 @@ import { Text, ScrollView } from 'react-native';
 import React from 'react';
 const s = require('../../styles/styles');
 
-export default function fire() {
+export default function Fire() {
   return (
     <ScrollView style={s.tips}>
       <Text style={s.tipTitle}>Home Fire Preparedness{'\n'}</Text>
