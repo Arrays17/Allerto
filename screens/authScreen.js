@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert } from 'react-native'
 
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,13 +10,17 @@ export default function AuthScreen({navigation}) {
     const [confirm, setConfirm] = useState(null);
     const [code, setCode] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [errorMsg, setErrorMsg] = useState(null);
 
     async function signInWithPhoneNumber(phoneNumber) {
-        console.log(phoneNumber)
         const phoneWithAreaCode = phoneNumber.replace(/^0+/, '+63');
-        console.log(phoneWithAreaCode)
-        const confirmation = await auth().signInWithPhoneNumber(phoneWithAreaCode, true).catch(error => console.log(error));
-        setConfirm(confirmation);
+        const confirmation = await auth().signInWithPhoneNumber(phoneWithAreaCode, true)
+            .catch(error => {
+                console.log(error.message)
+                setErrorMsg('Invalid Phone Number')
+            });
+        confirmation ? setErrorMsg(null) : null // Clear Error Message on Verified Phone Number
+        setConfirm(confirmation)
     }
 
     async function saveUser(user) {
@@ -25,20 +29,19 @@ export default function AuthScreen({navigation}) {
             console.log(userDetails)
             await AsyncStorage.setItem('user', userDetails)
         } catch (e) {
-
+            console.log(e)
         }
     }
 
     async function confirmCode() {
         try {
-          const user = await confirm.confirm(code);
-          console.log(user)
-          if (user) {
-              saveUser(user)
-              navigation.navigate('Home')
-          }
+          const user = await confirm.confirm(code).catch(error => setErrorMsg(error.message));
+            if (user) {
+                saveUser(user)
+                navigation.replace('Home')
+            }
         } catch (error) {
-          console.log('Invalid code.');
+            setErrorMsg('Invalid code.');
         }
     }
 
@@ -48,6 +51,18 @@ export default function AuthScreen({navigation}) {
         else
             setCode(text.replace(/[^0-9]/g,''))
     }
+
+    function clearInputs() {
+        if (!confirm) 
+            return setPhoneNumber('')
+        return setCode('')
+    }
+
+    useEffect(()=> {
+        if (!confirm)
+            return setPhoneNumber('')
+        setCode('')
+    }, [errorMsg])
 
     if (!confirm) {
         return (
@@ -67,9 +82,15 @@ export default function AuthScreen({navigation}) {
                         value={phoneNumber}
                         onChangeText={(text) => onChanged(text)}
                     />
+                    {
+                        errorMsg !== null ? (
+                            <Text style={s.errorText}>{errorMsg}</Text>
+                        ) : null
+                    }
                     <TouchableOpacity 
                         activeOpacity={0.8} 
-                        style={s.button}
+                        style={phoneNumber.length !== 11 ? s.buttonDisabled : s.button}
+                        disabled={phoneNumber.length !== 11 ? true : false}
                         onPress={() => signInWithPhoneNumber(phoneNumber)}
                     >
                         <Text style={s.buttonText}>
@@ -95,9 +116,15 @@ export default function AuthScreen({navigation}) {
                         value={code}
                         onChangeText={(text) => onChanged(text)}
                     />
+                    {
+                        errorMsg !== null ? (
+                            <Text style={s.errorText}>{errorMsg}</Text>
+                        ) : null
+                    }
                     <TouchableOpacity 
                         activeOpacity={0.8} 
-                        style={s.button}
+                        style={code.length !== 6 ? s.buttonDisabled : s.button}
+                        disabled={code.length !== 6 ? true : false}
                         onPress={() => confirmCode(code)}
                     >
                         <Text style={s.buttonText}>

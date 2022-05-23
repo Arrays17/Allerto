@@ -52,15 +52,25 @@ module.exports = StyleSheet.create({
 
     button: {
         padding: 15,
+        marginVertical: 15,
         backgroundColor: 'orange',
         borderColor: 'white',
         borderWidth: 1,
         borderRadius: 20,
     },
 
+    buttonDisabled: {
+        padding: 15,
+        marginVertical: 15,
+        backgroundColor: 'gray',
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 20,
+    },
+
     textInput: {
         padding: 10,
-        marginVertical: 10,
+        marginTop: 10,
         borderWidth: 1,
         borderColor: 'lightgray',
         borderRadius: 10,
@@ -80,6 +90,11 @@ module.exports = StyleSheet.create({
     subText: {
         color: "gray",
         fontSize: 16,
+    },
+
+    errorText: {
+        color: "red",
+        fontSize: 14
     },
 
     // Service Button Styles

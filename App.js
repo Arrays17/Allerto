@@ -49,12 +49,13 @@ export default function App() {
     <NavigationContainer>
       <AuthStack.Navigator
         screenOptions={{
-          headerShown: false
+          headerShown: false,
         }}>
         <AuthStack.Screen
           name="AuthScreen"
           component={AuthScreen}
           options={{
+            headerBackImage: "none",
             headerShown: true,
             headerTitle: "Register Phone Number",
             headerTitleAlign: 'center',

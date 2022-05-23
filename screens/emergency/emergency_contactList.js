@@ -22,7 +22,7 @@ export default function emergencyContacts(key) {
     }
 
     const TurnOnGPS = async () => {
-        await Location.getCurrentPositionAsync().catch(()=>{})
+        await Location.getCurrentPositionAsync().then(()=>setErrorMsg(null)).catch(()=>{})
         checkServices()
     }
 
@@ -36,7 +36,7 @@ export default function emergencyContacts(key) {
         return address
     }
 
-    const requestPermission = async () => {
+    const openSettings= async () => {
         Linking.openSettings()
     }
     
@@ -133,7 +133,7 @@ export default function emergencyContacts(key) {
                     <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
                 </TouchableOpacity> : null}
             {text == "Permission to access location was denied" ? 
-                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={requestPermission}>
+                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={openSettings}>
                     <Text style={s.buttonText}>{"Open App Settings"}</Text>
                 </TouchableOpacity> : null}
         </View>
