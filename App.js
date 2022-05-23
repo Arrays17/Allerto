@@ -24,7 +24,7 @@ export default function App() {
     console.log(user)
   }, [])
 
-  if (user) {
+  if (user !== null) {
     return (
       <NavigationContainer>
         <AuthStack.Navigator

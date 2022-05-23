@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Text, FlatList, TouchableOpacity, View } from 'react-native'
+import { Text, FlatList, TouchableOpacity, View, Linking } from 'react-native'
 import ListItem from '../../components/listItems'
 import fetchPlaces from '../../apis/fetchPlaces'
 import getAddress from '../../apis/getAddress'
@@ -9,6 +9,7 @@ const s = require('../../styles/styles')
 export default function emergencyContacts(key) {
     const {keyword} = key;
     const [locationEnabled, setLocationEnabled] = useState(false)
+    const [locationAccess, setLocationAccess] = useState('')
     const [location, setLocation] = useState(null)
     const [address, setAddress] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
@@ -34,6 +35,10 @@ export default function emergencyContacts(key) {
         let address = await getAddress(location).catch(()=>{})
         return address
     }
+
+    const requestPermission = async () => {
+        Linking.openSettings()
+    }
     
     (async () => {
         await checkServices()
@@ -55,6 +60,8 @@ export default function emergencyContacts(key) {
             if (status !== 'granted') {
                 if (!mounted) return null
                 setErrorMsg('Permission to access location was denied')
+            } else {
+                setLocationAccess(status)
             }
     
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
@@ -68,7 +75,7 @@ export default function emergencyContacts(key) {
     useEffect(()=>{
         console.log('locationEnabled? : ', locationEnabled)
         let mounted = true;
-        if (!location && locationEnabled) {
+        if (!location && locationEnabled && locationAccess == 'granted') {
             if (!mounted) return null;
             setErrorMsg(null)
             setupLocation(coords => coords.json())
@@ -124,6 +131,10 @@ export default function emergencyContacts(key) {
             {text == "Please turn on GPS" ? 
                 <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
                     <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
+                </TouchableOpacity> : null}
+            {text == "Permission to access location was denied" ? 
+                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={requestPermission}>
+                    <Text style={s.buttonText}>{"Open App Settings"}</Text>
                 </TouchableOpacity> : null}
         </View>
     )

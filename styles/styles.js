@@ -60,10 +60,26 @@ module.exports = StyleSheet.create({
 
     textInput: {
         padding: 10,
-        margin: 5,
+        marginVertical: 10,
         borderWidth: 1,
         borderColor: 'lightgray',
         borderRadius: 10,
+    },
+
+    // Auth Screen Styles
+
+    authBody: {
+        padding: 10,
+    },
+
+    authText: {
+        color: "black",
+        fontSize: 16,
+    },
+
+    subText: {
+        color: "gray",
+        fontSize: 16,
     },
 
     // Service Button Styles
@@ -172,12 +188,14 @@ module.exports = StyleSheet.create({
 
     itemContainer: {
         width: (Dimensions.get('window').width - 15),
+        maxHeight: 85,
         paddingHorizontal: 10,
         paddingVertical: 5,
         color: 'white',
         backgroundColor: "orange",
         marginBottom: 10,
-        borderRadius: 20
+        borderRadius: 20,
+        overflow: "scroll",
     },
     itemName: {
         fontSize: 20,

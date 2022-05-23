@@ -13,7 +13,9 @@ export default function AuthScreen({navigation}) {
 
     async function signInWithPhoneNumber(phoneNumber) {
         console.log(phoneNumber)
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        const phoneWithAreaCode = phoneNumber.replace(/^0+/, '+63');
+        console.log(phoneWithAreaCode)
+        const confirmation = await auth().signInWithPhoneNumber(phoneWithAreaCode, true).catch(error => console.log(error));
         setConfirm(confirmation);
     }
 
@@ -40,15 +42,30 @@ export default function AuthScreen({navigation}) {
         }
     }
 
+    function onChanged (text) {
+        if (!confirm)
+            setPhoneNumber(text.replace(/[^0-9]/g,''))
+        else
+            setCode(text.replace(/[^0-9]/g,''))
+    }
+
     if (!confirm) {
         return (
-            <KeyboardAvoidingView>
+            <KeyboardAvoidingView style={s.authBody}>
                 <View style={s.authContainer}>
+                    <Text style={s.authText}>
+                        Enter your 11-digit phone number.
+                    </Text>
+                    <Text style={s.subText}>
+                        Example: 09XXXXXXXXX
+                    </Text>
                     <TextInput 
                         placeholder='Enter Phone Number'
+                        keyboardType='number-pad'
+                        maxLength={11}
                         style={s.textInput}
                         value={phoneNumber}
-                        onChangeText={text => setPhoneNumber(text)}
+                        onChangeText={(text) => onChanged(text)}
                     />
                     <TouchableOpacity 
                         activeOpacity={0.8} 
@@ -65,13 +82,18 @@ export default function AuthScreen({navigation}) {
     }
 
     return (
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView style={s.authBody}>
             <View style={s.authContainer}>
+                    <Text style={s.authText}>
+                        Enter the 6-digit verification number sent to your number.
+                    </Text>
                     <TextInput 
                         placeholder='Enter Verification Code'
+                        keyboardType='number-pad'
+                        maxLength={6}
                         style={s.textInput}
                         value={code}
-                        onChangeText={text => setCode(text)}
+                        onChangeText={(text) => onChanged(text)}
                     />
                     <TouchableOpacity 
                         activeOpacity={0.8} 
