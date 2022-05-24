@@ -75,6 +75,7 @@ export default function emergencyContacts(key) {
     useEffect(()=>{
         console.log('locationEnabled? : ', locationEnabled)
         let mounted = true;
+        console.log('locationAccess : ', locationAccess)
         if (!location && locationEnabled && locationAccess == 'granted') {
             if (!mounted) return null;
             setErrorMsg(null)
@@ -90,7 +91,7 @@ export default function emergencyContacts(key) {
             setErrorMsg('Please turn on GPS')
         }
         return () => {mounted = false}
-    }, [locationEnabled])
+    }, [locationEnabled, locationAccess])
 
     useEffect(()=>{
         let mounted = true;

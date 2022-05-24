@@ -37,8 +37,8 @@ module.exports = StyleSheet.create({
 
     menu: {
         flexDirection: "row",
-        height: "100%",
-        paddingTop: 10,
+        height: '100%',
+        paddingVertical: 10,
         flexWrap: 'wrap',
         backgroundColor: '#212121',
         justifyContent: 'center',
@@ -76,6 +76,14 @@ module.exports = StyleSheet.create({
         borderRadius: 10,
     },
 
+    statusText: {
+        color: 'white',
+        fontSize: 18,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        paddingHorizontal: 50,
+    },
+
     // Auth Screen Styles
 
     authBody: {
@@ -103,8 +111,8 @@ module.exports = StyleSheet.create({
         display: "flex",
         minWidth: '45%',
         maxWidth: '45%',
-        minHeight: '26%',
-        maxHeight: '26%',
+        minHeight: Dimensions.get('window').height * 0.21,
+        maxHeight: Dimensions.get('window').height * 0.21,
         margin: 5,
         paddingHorizontal: 5,
         alignItems: "center",

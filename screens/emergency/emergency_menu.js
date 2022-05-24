@@ -26,11 +26,23 @@ export default function Emergency({navigation}) {
           }
           )} title="Fire Station" icon='fire' />
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-          {headerTitle: "Road and Traffic"})} title="Road and Traffic" icon='traffic-cone' />
+          {
+            headerTitle: "Road and Traffic",
+            keyword: "road_traffic"
+          }
+          )} title="Road and Traffic" icon='traffic-cone' />
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-          {headerTitle: "Red Cross Hotlines"})} title="Red Cross" icon='hospital' />
+          {
+            headerTitle: "Red Cross Hotlines",
+            keyword: "red_cross"
+          }
+          )} title="Red Cross" icon='hospital' />
         <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
-          {headerTitle: "Disaster Hotlines"})} title="National Disaster" icon='bell' />
+          {
+            headerTitle: "Disaster Hotlines",
+            keyword: "disaster"
+          }
+          )} title="National Disaster" icon='bell' />
         <Button911/>
       </View>
     );

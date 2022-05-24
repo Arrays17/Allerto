@@ -1,11 +1,29 @@
 import { Switch, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const s = require('../styles/styles');
 
 export default function Alerts() {
   const [isEnabled, setIsEnabled] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState)
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState)
+  }
+
+  async function updateSettings() {
+    await AsyncStorage.setItem('alertSettings', JSON.stringify(isEnabled))
+  }
+
+  useEffect(() => {
+    (async () => {
+      let alertSettings = await AsyncStorage.getItem('alertSettings')
+      alertSettings = JSON.parse(alertSettings)
+      if (alertSettings !== null)
+        setIsEnabled(alertSettings)
+    })()
+  }, [])
 
   useEffect(()=>{
     if (!isEnabled) {
@@ -16,6 +34,8 @@ export default function Alerts() {
         setErrorMsg("There are no current natural disaster alerts found near you.")
       }, 5000)
     }
+    
+    updateSettings()
 
   }, [isEnabled])
 
@@ -39,7 +59,7 @@ export default function Alerts() {
           )
         }
       </View>
-      <Text style={s.text}>{errorMsg}</Text>
+      <Text style={s.statusText}>{errorMsg}</Text>
     </View>
   )
 }
