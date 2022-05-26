@@ -1,5 +1,6 @@
 'use strict';
 import { StyleSheet, Dimensions } from "react-native";
+import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 module.exports = StyleSheet.create({
     // Common Components Styles
@@ -46,7 +47,7 @@ module.exports = StyleSheet.create({
 
     text: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'center'
     },
 
@@ -54,9 +55,9 @@ module.exports = StyleSheet.create({
         padding: 15,
         marginVertical: 15,
         backgroundColor: 'orange',
-        borderColor: 'white',
+        borderColor: 'orange',
         borderWidth: 1,
-        borderRadius: 20,
+        borderRadius: 99,
     },
 
     buttonDisabled: {
@@ -76,9 +77,17 @@ module.exports = StyleSheet.create({
         borderRadius: 10,
     },
 
-    statusText: {
+    titleText: {
         color: 'white',
         fontSize: 18,
+        fontWeight: 'bold',
+        letterSpacing: 1,
+        textAlign: 'center'
+    }, 
+
+    statusText: {
+        color: 'white',
+        fontSize: 16,
         fontStyle: 'italic',
         textAlign: 'center',
         paddingHorizontal: 50,
@@ -199,12 +208,55 @@ module.exports = StyleSheet.create({
     emergencyListScreenButton: {
         backgroundColor: 'darkorange',
         padding: 15,
+        margin: 20,
     },
     buttonText: {
         fontWeight: "bold",
         fontSize: 16,
         color: 'white',
         textAlign: "center",
+    },
+
+    // Modal Style
+
+    modalOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: '50%',
+        marginHorizontal: '10%',
+    },
+
+    modalBody: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-evenly',
+        backgroundColor: "#252525",
+    },
+
+    modalTitle: {
+        width: '100%',
+        paddingHorizontal: '25%',
+    },
+
+    modalOption: {
+        width: '100%',
+        padding: 20,
+        borderTopColor: 'orange',
+        borderBottomColor: 'orange',
+        borderLeftColor: "#252525",
+        borderRightColor: "#252525",
+        borderWidth: 1
     },
 
     // List Items Style

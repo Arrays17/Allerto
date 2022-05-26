@@ -1,39 +1,62 @@
+import React, { useState, useEffect } from 'react'
 import { View, Text } from 'react-native'
-import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const s = require('../../styles/styles')
 
 export default function emergency_favorites(key) {
   const {keyword} = key;
-  let stationName = '';
+  const [favoriteList, setFavoriteList] = useState(null)
+  const [stationName, setStationName] = useState(null)
+  let statusText = 'Loading...'
 
-  switch (keyword) {
-    case "police":
-      stationName = 'Police Station'
-      break;
-    case "hospital":
-      stationName = 'Hospital/Clinic'
-      break;
-    case "fire_station":
-      stationName = 'Fire Stations'
-      break;
-    case "road_traffic":
-      stationName = 'Fire Stations'
-      break;
-    case "red_cross":
-      stationName = 'Fire Stations'
-      break;
-    case "disaster":
-      stationName = 'Fire Stations'
-      break;
-  
-    default:
-      break;
+  async function getFavorites() {
+    const storeKey = 'favorites_' + keyword
+    const favorites = await AsyncStorage.getItem(storeKey)
+    if (favorites) {
+      setFavoriteList(JSON.parse(favorites))
+    }
   }
+
+  useEffect(() => {
+    switch (keyword) {
+      case "police":
+        setStationName('Police')
+        break;
+      case "hospital":
+        setStationName('Hospital')
+        break;
+      case "fire_station":
+        setStationName('Fire Station')
+        break;
+      case "road_traffic":
+        setStationName('Road and Traffic')
+        break;
+      case "red_cross":
+        setStationName('Red Cross')
+        break;
+      case "disaster":
+        setStationName('Disaster')
+        break;
+    
+      default:
+        break;
+    }
+
+    getFavorites()
+  }, [])
+
+  
 
   return (
     <View style={s.body}>
-      <Text style={s.statusText}>There is no {stationName} contacts saved.</Text>
+      {
+        
+        (favoriteList !== null) ? (
+          console.log(favoriteList)
+        ) :
+        (<Text style={s.statusText}>{statusText}</Text>)
+      }
     </View>
   )
 }

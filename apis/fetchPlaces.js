@@ -26,16 +26,16 @@ export default fetchPlaces = (coordinates, keyword) => {
                     var place = {}
                     var lat = res.result.geometry.location.lat;
                     var lng = res.result.geometry.location.lng;
-                    var coordinate = {
-                    latitude: lat,
-                    longitude: lng,
+                    var coordinates = {
+                        latitude: lat,
+                        longitude: lng,
                     }
                     var distance = getDistanceUsingLatLng(latitude, longitude, lat, lng)
                     place['id'] = id
                     place['name'] = res.result.name
                     place['address'] = res.result.vicinity
                     place['number'] = res.result.formatted_phone_number
-                    place['coordinate'] = coordinate
+                    place['coordinates'] = coordinates
                     place['distance'] = distance
 
                     places.push(place)

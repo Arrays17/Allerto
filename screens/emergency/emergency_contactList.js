@@ -111,15 +111,22 @@ export default function emergencyContacts(key) {
         text = errorMsg;
     }
 
-    const renderItem = ({item}) => (<ListItem name={item.name} address={item.address} number={item.number} distance={item.distance}/>)
+    const renderItem = ({item}) => (
+        <ListItem 
+            name={item.name} 
+            address={item.address} 
+            number={item.number} 
+            distance={item.distance} 
+            coordinates={item.coordinates} 
+            keyword={keyword}
+        />)
 
     return (
         <View style={s.emergencyListScreenBody}>
             {Places != null ? 
                 <>
                     <View>
-                        <Text style={s.text}>Your Current Location:</Text>
-                        <Text style={s.text}>{address}</Text>
+                        <Text style={s.text}>{"\n"}Detected Location:{"\n" + address + "\n"}</Text>
                     </View>
                     <FlatList
                         data = {Places}
@@ -127,7 +134,7 @@ export default function emergencyContacts(key) {
                         keyExtractor = {renderItem.id}
                     /> 
                 </>
-                : <Text style={s.emergencyListScreenText}>{text}</Text>
+                : <Text style={s.statusText}>{text}</Text>
             }
             {text == "Please turn on GPS" ? 
                 <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
