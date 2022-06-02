@@ -4,6 +4,8 @@ import ListItem from '../../components/listItems'
 import fetchPlaces from '../../apis/fetchPlaces'
 import getAddress from '../../apis/getAddress'
 import * as Location from 'expo-location'
+
+const EmergencyListController = require('../../controllers/emergencyListController');
 const s = require('../../styles/styles')
 
 export default function emergencyContacts(key) {
@@ -14,14 +16,13 @@ export default function emergencyContacts(key) {
     const [address, setAddress] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
     const [fetching, setFetching] = useState(false)
-    const [Places, setPlaces] = useState(null)
-    const [counter, setCounter] = useState(0)
+    const [emergencyList, setEmergencyList] = useState(null)
     const [refreshing, setRefreshing] = useState(false)
 
-    const onRefresh = React.useCallback(async () => {
+    const onRefresh = (async () => {
         setRefreshing(true);
     
-        setTimeout(setRefreshing(false), 2000);
+        setTimeout(() => setRefreshing(false), 2000);
     }, [refreshing])
 
     const checkServices = async () => {
@@ -51,11 +52,11 @@ export default function emergencyContacts(key) {
     (async () => {
         await checkServices()
 
-        if ((Places == null || Places === 'undefined' || JSON.stringify(Places) === '[]') && !fetching && location) {
+        if (!fetching && location && (emergencyList == null || emergencyList === 'undefined' || JSON.stringify(emergencyList) === '[]')) {
             setFetching(true)
-            await fetchPlaces(location, keyword)
-            .then(function(places) {
-                setPlaces(places)
+            await EmergencyListController.getEmergencyList(location, keyword)
+            .then((List) => {
+                setEmergencyList(List)
             })
         }
     })()
@@ -74,20 +75,22 @@ export default function emergencyContacts(key) {
     
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
     
-            await Location.getCurrentPositionAsync({accuracy: 4}).catch(()=>{})
+            await Location.getCurrentPositionAsync({accuracy: 4})
+            .then(coords => {
+                setLocation(coords)
+            })
+            .catch(()=>{})
         })()
 
         return () => {mounted=false}
     }, [])
 
     useEffect(()=>{
-        console.log('locationEnabled? : ', locationEnabled)
         let mounted = true;
-        console.log('locationAccess : ', locationAccess)
         if (!location && locationEnabled && locationAccess == 'granted') {
             if (!mounted) return null;
             setErrorMsg(null)
-            setupLocation(coords => coords.json())
+            setupLocation()
             .then(coords => {
                 setLocation({
                     latitude: coords.latitude,
@@ -105,7 +108,7 @@ export default function emergencyContacts(key) {
         let mounted = true;
         if (location && address == null) {            
             if (!mounted) return null;
-            setupAddress(address => address.json())
+            setupAddress()
             .then(address => {
                 setAddress(address)
             })
@@ -113,6 +116,15 @@ export default function emergencyContacts(key) {
         console.log('location : ', location)
         return () => {mounted=false}
     }, [location])
+
+    useEffect(() => {
+        let mounted = true
+        if (emergencyList && mounted) {
+            EmergencyListController.saveEmergencyList(keyword, emergencyList)
+        }
+
+        return () => mounted = false
+    }, [emergencyList])
 
     let text = 'Loading...';
     if (errorMsg) {
@@ -132,13 +144,13 @@ export default function emergencyContacts(key) {
 
     return (
         <View style={s.emergencyListScreenBody}>
-            {Places != null ? 
+            {emergencyList != null ? 
                 <>
                     <View>
                         <Text style={s.text}>{"\n"}Detected Location:{"\n" + address + "\n"}</Text>
                     </View>
                     <FlatList
-                        data = {Places}
+                        data = {emergencyList}
                         renderItem = {renderItem}
                         keyExtractor = {renderItem.id}
                     /> 

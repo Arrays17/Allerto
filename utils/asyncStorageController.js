@@ -3,13 +3,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Emergency Module
 
-export async function saveLocation(location) {
+export async function saveLocation(key, location) {
+    const storeKey = key + "Location"
     const locationString = JSON.stringify(location)
-    await AsyncStorage.setItem('previousLocation', locationString)
+    await AsyncStorage.setItem(storeKey, locationString)
+    .then(() => {
+        console.log(storeKey + " updated...")
+    })
 }
 
-export async function getPreviousLocation() {
-    const previousLocation = await AsyncStorage.getItem('previousLocation')
+export async function getPreviousLocation(key) {
+    const storeKey = key + 'Location'
+    const previousLocation = await AsyncStorage.getItem(storeKey)
     if (!previousLocation) return null
 
     return JSON.parse(previousLocation)

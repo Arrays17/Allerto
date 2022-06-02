@@ -53,20 +53,27 @@ export default function emergency_favorites(key) {
   }
 
   useEffect(() => {
-    if (!fetching){
+    let mounted = true
+
+    if (!fetching && mounted){
       setFetching(true)
       setTimeout(() => getFavoritesList(), 500)
     }
+
+    return () => mounted = false
   }, [fetching])
 
 
   useEffect(() => {
+    let mounted = true
     setStatusText("Loading...");
 
     if (favoriteList === null || JSON.stringify(favoriteList) === "[]") {
+      if (!mounted) return null
       setTimeout(() => setStatusText("No " + stationName + " contact added to favorites..."), 2000)
     }
-
+    
+    return () => mounted = false
   }, [favoriteList])
 
   const renderItem = ({item}) => (
