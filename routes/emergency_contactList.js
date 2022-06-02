@@ -23,7 +23,11 @@ export default function Emergency_ContactList({route}) {
            />
         <Tab.Screen name="Favorites"
            children={()=><Favorites  keyword={keyword}/>}
-           options={{ tabBarLabel: 'Favorites' }}/>
+           options={{ 
+              tabBarLabel: 'Favorites',
+              lazy: true
+            }}
+            />
     </Tab.Navigator>
   );
 }

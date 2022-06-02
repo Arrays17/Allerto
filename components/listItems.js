@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, TouchableOpacity, Linking, Platform, Alert, Modal, TouchableWithoutFeedback} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const favoritesController = require('../controllers/favoritesController')
 const s = require('../styles/styles')
 
 export default function ListItem(props) {
     const [distanceSettings, setDistanceSettings] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [isOnFavorites, setIsOnFavorites] = useState(false)
     const storeKey = 'favorites_' + props.keyword
     const number = props.number
     const address = props.address
@@ -18,9 +20,15 @@ export default function ListItem(props) {
         number: number,
         address: address,
         coordinates: coordinates,
-        distanceKilometers: distanceKilometers,
-        distanceMiles: distanceMiles
+        distance: {
+            kilometers: distanceKilometers,
+            miles: distanceKilometers
+        }
     }
+    
+    const onRefresh = () => {
+        props.refresh()
+    } 
 
     async function getSettings() {
         const settings = await AsyncStorage.getItem('settingsConfig')
@@ -31,19 +39,37 @@ export default function ListItem(props) {
         }
     }
 
+    async function checkIfOnFavorites() {
+        await favoritesController.favoritesContains(storeKey, data)
+            .then(result => {
+                setIsOnFavorites(result)
+            })
+    }
+
+    function openModal() {
+        checkIfOnFavorites(storeKey, data)
+        setModalVisible(true)
+    }
+
+    function closeModal() {
+        onRefresh()
+        setModalVisible(false)
+    }
+
     useEffect(() => {
         getSettings()
+        checkIfOnFavorites()
     }, [])
 
     return (
         <>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => callNumber(number)} onLongPress={() => setModalVisible(true)}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => callNumber(number)} onLongPress={() => openModal()}>
                 <View style={s.itemContainer}>
                     <Text numberOfLines={1} style={s.itemName}>{name}</Text>
                     <Text style={s.itemDistance}>
                         {
-                            (distanceSettings === 'miles') ? (distanceMiles + " MI")
-                            : (distanceKilometers + " KM")} away</Text>
+                            (distanceSettings === 'miles') ? (distanceMiles + " mi")
+                            : (distanceKilometers + " km")} away</Text>
                     <Text style={s.itemNumber}>{number ? number : address}</Text>
                 </View>
             </TouchableOpacity>
@@ -81,9 +107,23 @@ export default function ListItem(props) {
                             </TouchableOpacity>
                         </View>
                         <View style={s.modalOption}>
-                            <TouchableOpacity activeOpacity={0.8} onPress={() => setModalVisible(false)}>
-                                <Text style={s.text}>Add to Favorites</Text>
-                            </TouchableOpacity>
+                            {isOnFavorites ? (
+                                    <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                                        favoritesController.removeFromFavorites(storeKey, data)
+                                        closeModal()
+                                        }
+                                    }>
+                                        <Text style={s.text}>Remove from Favorites</Text>
+                                    </TouchableOpacity>
+                                ) :
+                                    <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                                        favoritesController.addToFavorites(storeKey, data)
+                                        closeModal()
+                                        }
+                                    }>
+                                        <Text style={s.text}>Add to Favorites</Text>
+                                    </TouchableOpacity>
+                            }
                         </View>
                     </View>
                 </View>
@@ -94,7 +134,6 @@ export default function ListItem(props) {
 
 function callNumber(number) {
     console.log('Calling ' + number)
-    //number = '(802) 287-9702' //for testing only, delete for production
     let phoneNumber = ''
     if (Platform.OS !== 'android'){
         phoneNumber = `telprompt:${number}`

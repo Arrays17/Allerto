@@ -1,9 +1,12 @@
 'use strict';
 import { StyleSheet, Dimensions } from "react-native";
-import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 module.exports = StyleSheet.create({
     // Common Components Styles
+
+    flatList: {
+        paddingVertical: 10
+    },
 
     switchContainer: {
         width: Dimensions.get('window').width,
@@ -262,15 +265,13 @@ module.exports = StyleSheet.create({
     // List Items Style
 
     itemContainer: {
-        width: (Dimensions.get('window').width - 15),
+        width: Dimensions.get('window').width,
         maxHeight: 85,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         paddingVertical: 5,
         color: 'white',
         backgroundColor: "orange",
         marginBottom: 10,
-        borderRadius: 20,
-        overflow: "scroll",
     },
     itemName: {
         fontSize: 20,

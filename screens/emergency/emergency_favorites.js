@@ -1,59 +1,99 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, FlatList } from 'react-native'
+import ListItem from '../../components/listItems'
 
+const favoritesController = require('../../controllers/favoritesController')
 const s = require('../../styles/styles')
 
 export default function emergency_favorites(key) {
   const {keyword} = key;
+  const storeKey = 'favorites_' + keyword
   const [favoriteList, setFavoriteList] = useState(null)
-  const [stationName, setStationName] = useState(null)
-  let statusText = 'Loading...'
+  const [statusText, setStatusText] = useState('Loading...')
+  const [fetching, setFetching] = useState(false)
 
-  async function getFavorites() {
-    const storeKey = 'favorites_' + keyword
-    const favorites = await AsyncStorage.getItem(storeKey)
-    if (favorites) {
-      setFavoriteList(JSON.parse(favorites))
-    }
+  let stationName = ''
+  switch (keyword) {   // Set Name for Status Text
+    case "police":
+      stationName = 'Police'
+      break;
+    case "hospital":
+      stationName = 'Hospital'
+      break;
+    case "fire_station":
+      stationName = 'Fire Station'
+      break;
+    case "road_traffic":
+      stationName = 'Road and Traffic'
+      break;
+    case "red_cross":
+      stationName = 'Red Cross'
+      break;
+    case "disaster":
+      stationName = 'Disaster'
+      break;
+  
+    default:
+      break;
+  }
+
+  const getFavoritesList = async () => {
+    await favoritesController.getFavorites(storeKey)
+    .then(List => {
+      setFetching(false)
+      if (favoriteList) // Exisiting Favorite List
+        if (List.length != favoriteList.length) {
+          setFavoriteList(List)
+        }
+  
+      if (!favoriteList) {
+        setFavoriteList(List)
+      }
+    })
   }
 
   useEffect(() => {
-    switch (keyword) {
-      case "police":
-        setStationName('Police')
-        break;
-      case "hospital":
-        setStationName('Hospital')
-        break;
-      case "fire_station":
-        setStationName('Fire Station')
-        break;
-      case "road_traffic":
-        setStationName('Road and Traffic')
-        break;
-      case "red_cross":
-        setStationName('Red Cross')
-        break;
-      case "disaster":
-        setStationName('Disaster')
-        break;
-    
-      default:
-        break;
+    if (!fetching){
+      setFetching(true)
+      setTimeout(() => getFavoritesList(), 500)
+    }
+  }, [fetching])
+
+
+  useEffect(() => {
+    setStatusText("Loading...");
+
+    if (favoriteList === null || JSON.stringify(favoriteList) === "[]") {
+      setTimeout(() => setStatusText("No " + stationName + " contact added to favorites..."), 2000)
     }
 
-    getFavorites()
-  }, [])
+  }, [favoriteList])
 
-  
+  const renderItem = ({item}) => (
+    <ListItem 
+        refresh = {() => {
+          setFavoriteList([])
+        }}
+        name={item.name} 
+        address={item.address} 
+        number={item.number} 
+        distance={item.distance} 
+        coordinates={item.coordinates} 
+        keyword={keyword}
+    />)
 
   return (
     <View style={s.body}>
       {
-        
-        (favoriteList !== null) ? (
-          console.log(favoriteList)
+        (favoriteList != null && JSON.stringify(favoriteList) !== "[]") ? (
+          <>
+            <FlatList
+            style={s.flatList}
+            data = {favoriteList}
+            renderItem = {renderItem}
+            keyExtractor = {(item, index) => index.toString()}
+            /> 
+          </>
         ) :
         (<Text style={s.statusText}>{statusText}</Text>)
       }

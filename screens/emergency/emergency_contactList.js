@@ -15,6 +15,14 @@ export default function emergencyContacts(key) {
     const [errorMsg, setErrorMsg] = useState(null)
     const [fetching, setFetching] = useState(false)
     const [Places, setPlaces] = useState(null)
+    const [counter, setCounter] = useState(0)
+    const [refreshing, setRefreshing] = useState(false)
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+    
+        setTimeout(setRefreshing(false), 2000);
+    }, [refreshing])
 
     const checkServices = async () => {
         let locationStatus = await Location.hasServicesEnabledAsync()
@@ -113,6 +121,7 @@ export default function emergencyContacts(key) {
 
     const renderItem = ({item}) => (
         <ListItem 
+            refresh = {() => onRefresh}
             name={item.name} 
             address={item.address} 
             number={item.number} 
