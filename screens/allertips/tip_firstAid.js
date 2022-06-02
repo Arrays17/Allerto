@@ -2,7 +2,7 @@ import { Text, ScrollView } from 'react-native';
 import React from 'react';
 const s = require('../../styles/styles');
 
-export default function firstAid() {
+export default function FirstAid() {
   return (
     <ScrollView style={s.tips}>
       <Text style={s.tipTitle}>Child & Baby First Aid{'\n'}</Text>

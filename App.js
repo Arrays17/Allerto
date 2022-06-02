@@ -1,72 +1,79 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from './screens/home';
-import Alerts from './screens/alerts';
-import Tracking from './screens/tracking';
-import Settings from './screens/settings';
-import AllerTips from './screens/allertips/allertips';
-const s = require('./styles/styles');
+import React, { useEffect, useState} from 'react';
 
-const Module = createBottomTabNavigator();
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Home from './routes/home';
+import AuthScreen from './screens/authScreen';
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
+  const [user, setUser] = useState(null)
+
+  async function getUser() {
+    const user = await AsyncStorage.getItem('user')
+    if (user !== null) {
+      setUser(user)
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+    console.log(user)
+  }, [])
+
+  if (user !== null) {
+    return (
+      <NavigationContainer>
+        <AuthStack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}>
+          <AuthStack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: 'orange',
+              },
+            }}/>
+        </AuthStack.Navigator>
+      </NavigationContainer>
+    );
+  }
+  
   return (
     <NavigationContainer>
-      <Module.Navigator
-        initialRouteName='Emergency'
-        backBehavior='history'
+      <AuthStack.Navigator
         screenOptions={{
-          tabBarActiveTintColor: 'orange',
-          headerShown: false
+          headerShown: false,
         }}>
-        <Module.Screen
-          name="Alerts"
-          component={Alerts}
+        <AuthStack.Screen
+          name="AuthScreen"
+          component={AuthScreen}
           options={{
-            tabBarLabel: 'Alerts',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="alert" color={color} size={size} />
-            ),
+            headerBackImage: "none",
+            headerShown: true,
+            headerTitle: "Register Phone Number",
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'orange',
+            },
           }}/>
-        <Module.Screen
-          name="Track Me"
-          component={Tracking}
-          options={{
-            tabBarLabel: 'Track Me',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />
-            ),
-          }}/>
-        <Module.Screen
-          name="Emergency"
+        <AuthStack.Screen
+          name="Home"
           component={Home}
           options={{
-            tabBarLabel: 'Emergency',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="phone" color={color} size={size} />
-            ),
+            headerShown: false,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'orange',
+            },
           }}/>
-        <Module.Screen
-          name="AllerTIPS"
-          component={AllerTips}
-          options={{
-            tabBarLabel: 'AllerTIPS',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="lightbulb-on" color={color} size={size} />
-            ),
-          }}/>
-        <Module.Screen
-          name="Settings"
-          component={Settings}
-          options={{
-            tabBarLabel: 'Settings',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="cog" color={color} size={size} />
-            ),
-          }}/>
-      </Module.Navigator>
+      </AuthStack.Navigator>
     </NavigationContainer>
   );
 }

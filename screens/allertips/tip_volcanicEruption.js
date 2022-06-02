@@ -2,7 +2,7 @@ import { Text, ScrollView } from 'react-native';
 import React from 'react';
 const s = require('../../styles/styles');
 
-export default function volcanicEruption() {
+export default function VolcanicEruption() {
   return (
     <ScrollView style={s.tips}>
       <Text style={s.tipTitle}>Before{'\n'}</Text>

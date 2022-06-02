@@ -2,38 +2,119 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 module.exports = StyleSheet.create({
-    // Header Component Styles
-    header: {
-        paddingTop: 30,
-        justifyContent: "center",
-        width: '100%',
-        backgroundColor: 'orange',
-    },
-    headerTitle: {
-        color: 'white',
-        textAlign: "center",
-        fontSize: 24,
-        fontWeight: "bold",
-        letterSpacing: 3,
-    },
-    menuIcon: {
-        position: "absolute",
-        color: 'white',
-        right: 16,
-        top: 40,
+    // Common Components Styles
+
+    flatList: {
+        paddingVertical: 10
     },
 
-    // Home Page Styles
+    switchContainer: {
+        width: Dimensions.get('window').width,
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 0,
+        padding: 15,
+        flexDirection: 'row',
+        alignItems: "center"
+    },
+
+    switchText: {
+        fontSize: 16,
+    },
+
+    switch: {
+        transform: [{
+            scaleX: 1.25}, 
+            {scaleY: 1.25
+        }],
+        position: 'absolute',
+        right: 10,
+    },
 
     body: {
         flex: 1,
-        height: "100%",
-        paddingTop: 10,
-        flexDirection: 'row',
+        color: 'white',
         backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
-        flexWrap: 'wrap'
+    },
+
+    menu: {
+        flexDirection: "row",
+        height: '100%',
+        paddingVertical: 10,
+        flexWrap: 'wrap',
+        backgroundColor: '#212121',
+        justifyContent: 'center',
+    },
+
+    text: {
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center'
+    },
+
+    button: {
+        padding: 15,
+        marginVertical: 15,
+        backgroundColor: 'orange',
+        borderColor: 'orange',
+        borderWidth: 1,
+        borderRadius: 99,
+    },
+
+    buttonDisabled: {
+        padding: 15,
+        marginVertical: 15,
+        backgroundColor: 'gray',
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 20,
+    },
+
+    textInput: {
+        padding: 10,
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: 'lightgray',
+        borderRadius: 10,
+    },
+
+    titleText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+        letterSpacing: 1,
+        textAlign: 'center'
+    }, 
+
+    statusText: {
+        color: 'white',
+        fontSize: 16,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        paddingHorizontal: 50,
+    },
+
+    // Auth Screen Styles
+
+    authBody: {
+        padding: 10,
+    },
+
+    authText: {
+        color: "black",
+        fontSize: 16,
+    },
+
+    subText: {
+        color: "gray",
+        fontSize: 16,
+    },
+
+    errorText: {
+        color: "red",
+        fontSize: 14
     },
 
     // Service Button Styles
@@ -42,8 +123,8 @@ module.exports = StyleSheet.create({
         display: "flex",
         minWidth: '45%',
         maxWidth: '45%',
-        minHeight: 175,
-        maxHeight: 175,
+        minHeight: Dimensions.get('window').height * 0.21,
+        maxHeight: Dimensions.get('window').height * 0.21,
         margin: 5,
         paddingHorizontal: 5,
         alignItems: "center",
@@ -98,9 +179,9 @@ module.exports = StyleSheet.create({
         alignContent: "center",
         textAlign: "center",
         justifyContent: 'center',
-        height: 92,
-        width: 92,
-        borderRadius: 46,
+        height: Dimensions.get('window').height * .13,
+        width: Dimensions.get('window').height * .13,
+        borderRadius: Dimensions.get('window').height * .13 / 2,
         backgroundColor: "gray",
         borderColor: 'orange',
         borderWidth: 5,
@@ -117,32 +198,80 @@ module.exports = StyleSheet.create({
     // Emergency List Screen Styles\
 
     emergencyListScreenBody: {
+        backgroundColor: '#212121',
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     emergencyListScreenText: {
+        color: 'white',
         fontSize: 20,
         margin: 10
     },
     emergencyListScreenButton: {
-        backgroundColor: 'orange',
+        backgroundColor: 'darkorange',
         padding: 15,
+        margin: 20,
     },
     buttonText: {
-        fontWeight: '400',
-        fontSize: 16
+        fontWeight: "bold",
+        fontSize: 16,
+        color: 'white',
+        textAlign: "center",
+    },
+
+    // Modal Style
+
+    modalOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: '50%',
+        marginHorizontal: '10%',
+    },
+
+    modalBody: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-evenly',
+        backgroundColor: "#252525",
+    },
+
+    modalTitle: {
+        width: '100%',
+        paddingHorizontal: '25%',
+    },
+
+    modalOption: {
+        width: '100%',
+        padding: 20,
+        borderTopColor: 'orange',
+        borderBottomColor: 'orange',
+        borderLeftColor: "#252525",
+        borderRightColor: "#252525",
+        borderWidth: 1
     },
 
     // List Items Style
 
     itemContainer: {
-        width: (Dimensions.get('window').width - 15),
-        paddingHorizontal: 10,
+        width: Dimensions.get('window').width,
+        maxHeight: 85,
+        paddingHorizontal: 15,
         paddingVertical: 5,
+        color: 'white',
         backgroundColor: "orange",
         marginBottom: 10,
-        borderRadius: 20
     },
     itemName: {
         fontSize: 20,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "993631018405",
+    "project_id": "allerto---development",
+    "storage_bucket": "allerto---development.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993631018405:android:dd39a5b70e0b0c29eb1c4c",
+        "android_client_info": {
+          "package_name": "com.allerto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993631018405-95m8vivobphnvtkg5b44m9smcfvkpapr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSFa1B3vb8YgZUcSP4ES7nZVGtI8B7rV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993631018405-95m8vivobphnvtkg5b44m9smcfvkpapr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

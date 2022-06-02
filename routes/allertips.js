@@ -1,14 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Menu from './allertips_Menu';
-import Earthquake from './tip_earthquake';
-import Landslide from './tip_landslide';
-import Fire from './tip_fire';
-import Flood from './tip_flood';
-import Typhoon from './tip_typhoon';
-import VolcanicEruption from './tip_volcanicEruption';
-import FirstAid from './tip_firstAid';
-import SurvivalKit from './tip_survivalKit';
+import Menu from '../screens/allertips/allertips_menu';
+import Earthquake from '../screens/allertips/tip_earthquake';
+import Landslide from '../screens/allertips/tip_landslide';
+import Fire from '../screens/allertips/tip_fire';
+import Flood from '../screens/allertips/tip_flood';
+import Typhoon from '../screens/allertips/tip_typhoon';
+import VolcanicEruption from '../screens/allertips/tip_volcanicEruption';
+import FirstAid from '../screens/allertips/tip_firstAid';
+import SurvivalKit from '../screens/allertips/tip_survivalKit';
 
 const AuthStack = createStackNavigator();
 

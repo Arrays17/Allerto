@@ -2,7 +2,7 @@ import { Text, ScrollView } from 'react-native';
 import React from 'react';
 const s = require('../../styles/styles');
 
-export default function survivalKit() {
+export default function SurvivalKit() {
   return (
     <ScrollView style={s.tips}>
       <Text style={s.tipTitle}>What Do You Need In A Survival Kit?{'\n'}</Text>

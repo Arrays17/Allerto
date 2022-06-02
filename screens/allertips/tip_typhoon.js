@@ -2,7 +2,7 @@ import { Text, ScrollView } from 'react-native';
 import React from 'react';
 const s = require('../../styles/styles');
 
-export default function typhoon() {
+export default function Typhoon() {
   return (
     <ScrollView style={s.tips}>
       <Text style={s.tipTitle}>Before{'\n'}</Text>
