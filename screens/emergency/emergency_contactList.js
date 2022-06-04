@@ -19,11 +19,11 @@ export default function emergencyContacts(key) {
     const [emergencyList, setEmergencyList] = useState(null)
     const [refreshing, setRefreshing] = useState(false)
 
-    const onRefresh = (async () => {
-        setRefreshing(true);
-    
-        setTimeout(() => setRefreshing(false), 2000);
-    }, [refreshing])
+    const onRefresh = () => {
+        setEmergencyList([])
+        setRefreshing(true)
+        setFetching(false)
+    }
 
     const checkServices = async () => {
         let locationStatus = await Location.hasServicesEnabledAsync()
@@ -52,11 +52,12 @@ export default function emergencyContacts(key) {
     (async () => {
         await checkServices()
 
-        if (!fetching && location && (emergencyList == null || emergencyList === 'undefined' || JSON.stringify(emergencyList) === '[]')) {
+        if (!fetching && location ) {
             setFetching(true)
             await EmergencyListController.getEmergencyList(location, keyword)
             .then((List) => {
                 setEmergencyList(List)
+                setRefreshing(false)
             })
         }
     })()
@@ -75,9 +76,12 @@ export default function emergencyContacts(key) {
     
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
     
-            await Location.getCurrentPositionAsync({accuracy: 4})
+            await setupLocation()
             .then(coords => {
-                setLocation(coords)
+                setLocation({
+                    latitude: coords.latitude,
+                    longitude: coords.longitude
+                })
             })
             .catch(()=>{})
         })()
@@ -119,7 +123,8 @@ export default function emergencyContacts(key) {
 
     useEffect(() => {
         let mounted = true
-        if (emergencyList && mounted) {
+        if (emergencyList && JSON.stringify(emergencyList) != '[]') {
+            if (!mounted) return null
             EmergencyListController.saveEmergencyList(keyword, emergencyList)
         }
 
@@ -153,6 +158,8 @@ export default function emergencyContacts(key) {
                         data = {emergencyList}
                         renderItem = {renderItem}
                         keyExtractor = {renderItem.id}
+                        refreshing={refreshing}
+                        onRefresh={() => onRefresh()}
                     /> 
                 </>
                 : <Text style={s.statusText}>{text}</Text>

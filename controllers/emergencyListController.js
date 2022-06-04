@@ -14,36 +14,41 @@ export async function saveEmergencyList(key, data) {
 
 export async function handleLocation(location) {
     const prevLocation = await StorageController.getPreviousLocation('previous')
+    console.log('Current Location: ', location)
+    console.log('Previous Location: ', prevLocation)
 
     if (prevLocation === null) {
-        await StorageController.saveLocation('previous', location) // No Location Saved Yet, Save Current Location
+        StorageController.saveLocation('previous', location) // No Location Saved Yet, Save Current Location
         return false
     }
 
-    var distanceFromPrevLocation = parseFloat(getDistanceUsingLatLng(prevLocation.latitude, prevLocation.longitude, location.latitude, location.latitude).kilometers)
+    var distanceFromPrevLocation = parseFloat(getDistanceUsingLatLng(prevLocation.latitude, prevLocation.longitude, location.latitude, location.longitude).kilometers)
+    console.log('Distance from Prev Loc: ', distanceFromPrevLocation)
 
     if (distanceFromPrevLocation >= 1) { // If location difference is greater than 1KM, return false -- fetch from Google API
-        await StorageController.saveLocation('previous', location)
+        StorageController.saveLocation('previous', location)
         return false
     }
         
     const oldLocation = await StorageController.getPreviousLocation('old')
+    console.log('Old Location: ', oldLocation)
 
     if (oldLocation == null) {
-        await StorageController.saveLocation('previous', location)
-        await StorageController.saveLocation('old', prevLocation)
+        StorageController.saveLocation('previous', location)
+        StorageController.saveLocation('old', prevLocation)
         return true
     }
     
-    var distanceFromOldLocation = parseFloat(getDistanceUsingLatLng(oldLocation.latitude, oldLocation.longitude, location.latitude, location.latitude).kilometers)
+    var distanceFromOldLocation = parseFloat(getDistanceUsingLatLng(oldLocation.latitude, oldLocation.longitude, location.latitude, location.longitude).kilometers)
+    console.log('Distance from Old Loc: ', distanceFromOldLocation)
 
     if (distanceFromOldLocation + distanceFromPrevLocation >= 1) { // If location difference is greater than 1KM, return false -- fetch from Google API
-        await StorageController.saveLocation('previous', location)
-        await StorageController.saveLocation('old', prevLocation)
+        StorageController.saveLocation('previous', location)
+        StorageController.saveLocation('old', prevLocation)
         return false
     }
 
-    await StorageController.saveLocation('previous', location)
+    StorageController.saveLocation('previous', location)
     return true
 
 }
@@ -51,16 +56,16 @@ export async function handleLocation(location) {
 export async function getEmergencyList(location, keyword) {
     let emergencyList = []
     const storeKey = keyword + "_emergencyList"
-
+    const List = await StorageController.getPreviousEmergencyList(storeKey)
+    
     // To ADD
     // Get Data from Own Database First
     // then Push to Emergency List Array
 
     const isSameLocation = await handleLocation(location)
 
-    if (isSameLocation) {
+    if (isSameLocation && JSON.stringify(List) != '[]') {
         console.log('Saved Data used')
-        const List = await StorageController.getPreviousEmergencyList(storeKey)
         List.forEach(item => {
             emergencyList.push(item)
         })
