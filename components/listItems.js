@@ -57,8 +57,13 @@ export default function ListItem(props) {
     }
 
     useEffect(() => {
+        let mounted = true
+
+        if (!mounted) return null
         getSettings()
         checkIfOnFavorites()
+
+        return () => mounted = false
     }, [])
 
     return (

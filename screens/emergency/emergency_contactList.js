@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import { Text, FlatList, TouchableOpacity, View, Linking } from 'react-native'
+import { Text, FlatList, TouchableOpacity, View, Linking, ScrollView, RefreshControl} from 'react-native'
 import ListItem from '../../components/listItems'
-import fetchPlaces from '../../apis/fetchPlaces'
 import getAddress from '../../apis/getAddress'
 import * as Location from 'expo-location'
 
@@ -21,8 +20,12 @@ export default function emergencyContacts(key) {
 
     const onRefresh = () => {
         setEmergencyList([])
+        setErrorMsg(null)
+        setLocation(null)
+        setAddress(null)
         setRefreshing(true)
         setFetching(false)
+        checkServices()
     }
 
     const checkServices = async () => {
@@ -48,16 +51,32 @@ export default function emergencyContacts(key) {
     const openSettings= async () => {
         Linking.openSettings()
     }
+
+    const checkPermissions = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync()
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied')
+        } else {
+            setLocationAccess(status)
+        }
+
+        return status
+    }
     
     (async () => {
+
         await checkServices()
+        await checkPermissions()
+        handleLocation()
+
+        if(refreshing) 
+        setRefreshing(false)
 
         if (!fetching && location ) {
             setFetching(true)
             await EmergencyListController.getEmergencyList(location, keyword)
             .then((List) => {
                 setEmergencyList(List)
-                setRefreshing(false)
             })
         }
     })()
@@ -66,45 +85,56 @@ export default function emergencyContacts(key) {
         let mounted = true;
 
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync()
-            if (status !== 'granted') {
-                if (!mounted) return null
-                setErrorMsg('Permission to access location was denied')
-            } else {
-                setLocationAccess(status)
-            }
-    
+            let { status } = await checkPermissions()
+
             Location.setGoogleApiKey(process.env.GOOGLE_API_KEY)
+
+            if(status !== 'granted' || !mounted) return
     
             await setupLocation()
             .then(coords => {
+                if (!mounted) return
                 setLocation({
                     latitude: coords.latitude,
                     longitude: coords.longitude
                 })
             })
-            .catch(()=>{})
         })()
 
         return () => {mounted=false}
     }, [])
 
-    useEffect(()=>{
+    const handleLocation = () => {
         let mounted = true;
+
+        if (!location && !locationEnabled && locationAccess == 'granted') {
+            if (!mounted) return null;
+            setErrorMsg('Please turn on GPS')
+            return
+        }
+
         if (!location && locationEnabled && locationAccess == 'granted') {
             if (!mounted) return null;
             setErrorMsg(null)
             setupLocation()
             .then(coords => {
+                if (!mounted) return
                 setLocation({
                     latitude: coords.latitude,
                     longitude: coords.longitude
                 })
             })
-        } else if (!location && !locationEnabled) {
-            if (!mounted) return null;
-            setErrorMsg('Please turn on GPS')
         }
+
+        return () => {mounted = false}
+    }
+
+    useEffect(()=>{
+        let mounted = true;
+        
+        if (!mounted) return
+        handleLocation()
+
         return () => {mounted = false}
     }, [locationEnabled, locationAccess])
 
@@ -114,6 +144,7 @@ export default function emergencyContacts(key) {
             if (!mounted) return null;
             setupAddress()
             .then(address => {
+                if (!mounted) return
                 setAddress(address)
             })
         }
@@ -149,7 +180,7 @@ export default function emergencyContacts(key) {
 
     return (
         <View style={s.emergencyListScreenBody}>
-            {emergencyList != null ? 
+            {(emergencyList != null && JSON.stringify(emergencyList) != '[]') ? 
                 <>
                     <View>
                         <Text style={s.text}>{"\n"}Detected Location:{"\n" + address + "\n"}</Text>
@@ -162,16 +193,29 @@ export default function emergencyContacts(key) {
                         onRefresh={() => onRefresh()}
                     /> 
                 </>
-                : <Text style={s.statusText}>{text}</Text>
+                : 
+                <>
+                    <ScrollView 
+                        contentContainerStyle={s.body}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                            />
+                        }
+                    >
+                        <Text style={s.statusText}>{text}</Text>
+                        {text == "Please turn on GPS" ? 
+                            <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
+                                <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
+                            </TouchableOpacity> : null}
+                        {text == "Permission to access location was denied" ? 
+                            <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={openSettings}>
+                                <Text style={s.buttonText}>{"Open App Settings"}</Text>
+                            </TouchableOpacity> : null}
+                    </ScrollView>
+                </>
             }
-            {text == "Please turn on GPS" ? 
-                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={TurnOnGPS}>
-                    <Text style={s.buttonText}>{"TURN ON GPS"}</Text>
-                </TouchableOpacity> : null}
-            {text == "Permission to access location was denied" ? 
-                <TouchableOpacity activeOpacity={0.65} style={s.emergencyListScreenButton} onPress={openSettings}>
-                    <Text style={s.buttonText}>{"Open App Settings"}</Text>
-                </TouchableOpacity> : null}
         </View>
     )
 }

@@ -57,7 +57,10 @@ export default function emergency_favorites(key) {
 
     if (!fetching && mounted){
       setFetching(true)
-      setTimeout(() => getFavoritesList(), 500)
+      setTimeout(() => {
+        if (!mounted) return
+        getFavoritesList()
+      }, 500)
     }
 
     return () => mounted = false
@@ -69,7 +72,7 @@ export default function emergency_favorites(key) {
     setStatusText("Loading...");
 
     if (favoriteList === null || JSON.stringify(favoriteList) === "[]") {
-      if (!mounted) return null
+      if (!mounted) return
       setTimeout(() => setStatusText("No " + stationName + " contact added to favorites..."), 2000)
     }
     
