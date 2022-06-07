@@ -57,8 +57,8 @@ module.exports = StyleSheet.create({
     button: {
         padding: 15,
         marginVertical: 15,
-        backgroundColor: 'orange',
-        borderColor: 'orange',
+        backgroundColor: 'darkorange',
+        borderColor: 'darkorange',
         borderWidth: 1,
         borderRadius: 99,
     },
@@ -166,7 +166,7 @@ module.exports = StyleSheet.create({
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "orange",
+        color: "darkorange",
     },
 
     // 911 Button
@@ -183,7 +183,7 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').height * .13,
         borderRadius: Dimensions.get('window').height * .13 / 2,
         backgroundColor: "gray",
-        borderColor: 'orange',
+        borderColor: 'darkorange',
         borderWidth: 5,
     },
 
@@ -255,8 +255,8 @@ module.exports = StyleSheet.create({
     modalOption: {
         width: '100%',
         padding: 20,
-        borderTopColor: 'orange',
-        borderBottomColor: 'orange',
+        borderTopColor: 'darkorange',
+        borderBottomColor: 'darkorange',
         borderLeftColor: "#252525",
         borderRightColor: "#252525",
         borderWidth: 1
@@ -270,7 +270,7 @@ module.exports = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5,
         color: 'white',
-        backgroundColor: "orange",
+        backgroundColor: "darkorange",
         marginBottom: 10,
     },
     itemName: {
@@ -303,4 +303,46 @@ module.exports = StyleSheet.create({
         textAlign: "right",
     },
 
+    // Tracking Screen
+
+    trackingScreenBody: {
+        flex: 1,
+        color: 'white',
+        backgroundColor: '#212121',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    },
+
+    phoneInput: {
+        flex: 0.97,
+        paddingHorizontal: 15,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        borderWidth: 1,
+        textAlign: 'center'
+    },
+
+    contactFieldContainer: {
+        width: '70%',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+    }, 
+
+    contactsButtonContainer: {
+        backgroundColor: 'darkorange',
+        padding: 5,
+        borderRadius: 8,
+        borderWidth: 0,
+        justifyContent: 'center',
+        textAlign: 'center'
+    },
+
+    contactsButton: {
+        color: 'white',
+    },
+
 })
+
+
