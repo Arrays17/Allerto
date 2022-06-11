@@ -75,7 +75,7 @@ export default function ListItem(props) {
                         {
                             (distanceSettings === 'miles') ? (distanceMiles + " mi")
                             : (distanceKilometers + " km")} away</Text>
-                    <Text style={s.itemNumber}>{number ? number : address}</Text>
+                    <Text style={s.itemNumber} numberOfLines={1}>{number ? number : address}</Text>
                 </View>
             </TouchableOpacity>
             <Modal

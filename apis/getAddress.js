@@ -14,7 +14,7 @@ export default getAddress = async (coordinates) => {
 
 
     if (place[0]) {
-        let address = place[0].name + ' ' + place[0].street + ', ' +place[0].city + ' City, ' + place[0].region
+        let address = (place[0].name || '') + ' ' + (place[0].street || '') + ', ' + (place[0].city || '') + (place[0].city && ' City, ') + (place[0].region || '')
         console.log(place[0])
         console.log(address)
         return address

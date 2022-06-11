@@ -64,7 +64,7 @@ export async function getEmergencyList(location, keyword) {
 
     const isSameLocation = await handleLocation(location)
 
-    if (isSameLocation && JSON.stringify(List) != '[]') {
+    if (isSameLocation && JSON.stringify(List) != '[]' && List !== null) {
         console.log('Saved Data used')
         List.forEach(item => {
             emergencyList.push(item)
