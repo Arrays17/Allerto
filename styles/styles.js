@@ -343,7 +343,7 @@ module.exports = StyleSheet.create({
     trackingButton: {
         padding: 30,
         marginVertical: 20,
-        backgroundColor: '#212121',
+        backgroundColor: 'darkorange',
         borderColor: 'darkorange',
         borderWidth: 5,
         borderColor: 'darkorange',
@@ -351,7 +351,7 @@ module.exports = StyleSheet.create({
     },
 
     trackingButtonText: {
-        color: 'darkorange',
+        color: '#212121',
         fontSize: 16,
         fontWeight: 'bold'
     },

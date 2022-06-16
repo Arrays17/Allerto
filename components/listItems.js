@@ -68,7 +68,12 @@ export default function ListItem(props) {
 
     return (
         <>
-            <TouchableOpacity activeOpacity={0.8} onPress={number ? () => callNumber(number) : () => openMaps(name, coordinates.latitude, coordinates.longitude)} onLongPress={() => openModal()}>
+            <TouchableOpacity 
+                activeOpacity={0.8} 
+                onPress={
+                    number ? () => callNumber(number) : () => openMaps(name, coordinates.latitude, coordinates.longitude)} onLongPress={() => openModal()
+                }
+            >
                 <View style={s.itemContainer}>
                     <Text numberOfLines={1} style={s.itemName}>{name}</Text>
                     <Text style={s.itemDistance}>

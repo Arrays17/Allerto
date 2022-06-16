@@ -48,7 +48,8 @@ export default function Home() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />
             ),
-          }}/>
+          }}
+        />
         <Module.Screen
           name="Emergency"
           component={Emergency}

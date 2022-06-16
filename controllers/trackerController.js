@@ -9,7 +9,7 @@ export const requestContactsPermission = async () => {
                 title: "Allerto App Contacts Permission",
                 message: "Allerto tracking feature needs to access your contacts for you to select your recipient.",
                 buttonNeutral: "Ask me later",
-                buttonNegative: "Cancel",
+                buttonNegative: "Deny",
                 buttonPositive: "OK"
             }
         )
@@ -28,8 +28,13 @@ export const requestContactsPermission = async () => {
 
 export const getContactsList = async () => {
     try {
+        let contactsList = []
         const List = await Contacts.getAll()
-        return List
+        for (let contact of List) {
+            if (contact.phoneNumbers.length > 0)
+            contactsList.push(contact)
+        }
+        return contactsList
     } catch (error) {
         console.warn(error)
     }
