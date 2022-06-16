@@ -25,7 +25,8 @@ export default function Emergency_ContactList({route}) {
            children={()=><Favorites  keyword={keyword}/>}
            options={{ 
               tabBarLabel: 'Favorites',
-              lazy: true
+              lazy: true,
+              
             }}
             />
     </Tab.Navigator>

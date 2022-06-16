@@ -82,7 +82,7 @@ module.exports = StyleSheet.create({
 
     titleText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
         letterSpacing: 1,
         textAlign: 'center'
@@ -228,14 +228,14 @@ module.exports = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.8)',
     },
 
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: '50%',
+        marginVertical: '30%',
         marginHorizontal: '10%',
     },
 
@@ -243,7 +243,8 @@ module.exports = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        justifyContent: 'space-evenly',
+        padding: 5,
+        justifyContent: 'center',
         backgroundColor: "#252525",
     },
 
@@ -255,11 +256,8 @@ module.exports = StyleSheet.create({
     modalOption: {
         width: '100%',
         padding: 20,
-        borderTopColor: 'darkorange',
-        borderBottomColor: 'darkorange',
-        borderLeftColor: "#252525",
-        borderRightColor: "#252525",
-        borderWidth: 1
+        backgroundColor: 'rgba(255,130,0,0.7)',
+        marginBottom: 5,
     },
 
     // List Items Style
@@ -274,7 +272,7 @@ module.exports = StyleSheet.create({
         marginBottom: 10,
     },
     itemName: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: "bold",
     },
     itemDistance: {
@@ -282,7 +280,7 @@ module.exports = StyleSheet.create({
         fontStyle: "italic",
     },
     itemNumber: {
-        fontSize: 20,
+        fontSize: 16,
     },
 
     // tips
@@ -326,7 +324,6 @@ module.exports = StyleSheet.create({
         width: '70%',
         justifyContent: 'space-between',
         marginVertical: 10,
-        marginHorizontal: 10,
         flexDirection: 'row',
     }, 
 
@@ -342,6 +339,50 @@ module.exports = StyleSheet.create({
     contactsButton: {
         color: 'white',
     },
+
+    trackingButton: {
+        padding: 30,
+        marginVertical: 20,
+        backgroundColor: '#212121',
+        borderColor: 'darkorange',
+        borderWidth: 5,
+        borderColor: 'darkorange',
+        borderRadius: 60,
+    },
+
+    trackingButtonText: {
+        color: 'darkorange',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+
+    contactsItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: 5,
+        marginBottom: 5,
+        backgroundColor: 'rgba(255,130,0,0.7)'
+    },
+
+    contactImageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        overflow: 'hidden'
+    },
+
+    contactImg: {
+        height: 50,
+        width: 50,
+    },
+
+    contactImgAlt: {
+        fontSize: 28
+    }
 
 })
 

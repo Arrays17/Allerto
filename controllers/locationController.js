@@ -3,11 +3,10 @@ import { Linking } from 'react-native';
 
 const API_KEY = process.env.GOOGLE_API_KEY
 
-
-
-let locationAccess = null;
-let locationEnabled = null;
-let locationData = null;
+let locationAccess
+let locationEnabled
+let locationData
+let locationAddress
 
 ;(async () => {
     if (locationEnabled === null && locationAccess === 'granted') {
@@ -25,7 +24,7 @@ export const setGoogleAPI = () => {
     Location.setGoogleApiKey(API_KEY)
 }
 
-export const checkServices = async () => {
+export const checkLocationServices = async () => {
     let enabled = await Location.hasServicesEnabledAsync()
     locationEnabled = enabled
 }
@@ -41,30 +40,38 @@ export const openSettings = () => {
 }
 
 export const requestForegroundPermissions = async () => {
-    let {status} = await Location.getForegroundPermissionsAsync()
+    const getForeground = await Location.getForegroundPermissionsAsync()
+    if (getForeground.status === 'granted') {
+        locationAccess = getForeground.status
+        return
+    }
+
+    const {status} = await Location.requestForegroundPermissionsAsync()
     locationAccess = status
-    return status
 }
 
-export const getAddress = async () => {
+export const setupAddress = async () => {
     let {coords} = await Location.getCurrentPositionAsync({accuracy: 4})
     let {latitude, longitude} = coords
 
-    let place = await Location.reverseGeocodeAsync({latitude,longitude})
+    let place = await Location.reverseGeocodeAsync({latitude,longitude}).catch(()=> console.warn('Error with Reverse Geocoding'))
 
     if (place[0]) {
-        let complete = place[0].name + ' ' + place[0].street + ', ' + place[0].city + ' City, ' + place[0].region
+        let complete = (place[0].name != null ? place[0].name : '') + ' ' + (place[0].street != null ? place[0].street : '') + 
+            (place[0].street != null ? ' street' : '') + ', ' + (place[0].city != null ? place[0].city : '') + 
+            (place[0].city != null ? ' City,' : '') + ' ' + (place[0].region != null ? place[0].region : '') + ', ' +
+            (place[0].country != null ? place[0].country : '')
         let address = {...place[0], complete: complete}
-        return address
+        locationAddress = address
     }
 }
 
 export const getLocation = async () => {
-    let location = await Location.getCurrentPositionAsync({accuracy: 4})
+    let location = await Location.getCurrentPositionAsync({accuracy: 4}).catch(()=> {})
     return location
 }
 
-export const requestPermissions = async () => {
+export const requestBackgroundPermissions = async () => {
     let {status} = await Location.requestBackgroundPermissionsAsync()
     return status
 }
@@ -72,5 +79,6 @@ export const requestPermissions = async () => {
 export {
     locationAccess,
     locationEnabled,
-    locationData
+    locationData,
+    locationAddress
 }
