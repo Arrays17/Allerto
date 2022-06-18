@@ -52,7 +52,7 @@ export default ContactsItem = (props) => {
   }
 
   const selectNumber = (number) => {
-    props.onPress(number)
+    props.onPress(displayName, number)
     setModalVisible(false)
   }
 

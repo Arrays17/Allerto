@@ -305,6 +305,7 @@ module.exports = StyleSheet.create({
 
     trackingScreenBody: {
         flex: 1,
+        paddingHorizontal: 20,
         color: 'white',
         backgroundColor: '#212121',
         alignItems: 'center',
@@ -321,7 +322,7 @@ module.exports = StyleSheet.create({
     },
 
     contactFieldContainer: {
-        width: '70%',
+        width: '90%',
         justifyContent: 'space-between',
         marginVertical: 10,
         flexDirection: 'row',

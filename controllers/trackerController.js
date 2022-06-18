@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import Contacts from 'react-native-contacts'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const requestContactsPermission = async () => {
     try {
@@ -38,4 +39,19 @@ export const getContactsList = async () => {
     } catch (error) {
         console.warn(error)
     }
+}
+
+export const saveTrackingDetails = async (details) => {
+    const detailsString = JSON.stringify(details)
+    await AsyncStorage.setItem('recipient', detailsString)
+}
+
+export const getTrackingDetails = async () => {
+    const details = await AsyncStorage.getItem('recipient')
+
+    if (!details) return null
+
+    const parsedDetails = JSON.parse(details)
+
+    return parsedDetails
 }

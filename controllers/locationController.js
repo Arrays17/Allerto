@@ -1,7 +1,29 @@
 import * as Location from 'expo-location'
+import * as TaskManager from 'expo-task-manager'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Linking } from 'react-native';
 
 const API_KEY = process.env.GOOGLE_API_KEY
+const LOCATION_TASK_NAME = 'background-location-tracking'
+
+TaskManager.defineTask(LOCATION_TASK_NAME, ({data, error}) => {
+    if (error) {
+        console.warn('Location Task Error:', error.message)
+        return
+    }
+
+    ;(async () => {
+        const user = await AsyncStorage.getItem('user')
+        const parsedUser = JSON.parse(user)
+
+        if (data) {
+            console.log(parsedUser.user.uid)
+            // TODO
+            // Send Location Data to Firebase Firestore 
+            // Send SMS to Recipient containing User Tracking Details
+        }
+    })()
+})
 
 let locationAccess
 let locationEnabled
@@ -19,6 +41,28 @@ let locationAddress
     }
 
 })()
+
+export const startTracking = async () => {
+    const Tasks = await TaskManager.getRegisteredTasksAsync()
+    console.log(Tasks)
+    if (await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME)) {
+        await TaskManager.unregisterTaskAsync(LOCATION_TASK_NAME)
+    }
+
+    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        foregroundService: {
+            notificationTitle: "Tracking In Progress",
+            notificationBody: "Location tracking is currently running in background",
+            notificationColor: "#50FA8200"
+        },
+        accuracy: Location.Accuracy.Highest,
+        timeInterval: 10000,
+    })
+}
+
+export const stopTracking = async () => {
+    await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME)
+}
 
 export const setGoogleAPI = () => {
     Location.setGoogleApiKey(API_KEY)
@@ -80,5 +124,6 @@ export {
     locationAccess,
     locationEnabled,
     locationData,
-    locationAddress
+    locationAddress,
+    Location
 }

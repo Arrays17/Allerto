@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { Text, View, TouchableOpacity, TextInput, Modal, TouchableWithoutFeedback, AppState, FlatList} from 'react-native'
+import { Text, View, TouchableOpacity, TextInput, Modal, TouchableWithoutFeedback, AppState, FlatList, Alert} from 'react-native'
 import ContactsItem from '../components/contactsItem'
 import Icon from 'react-native-vector-icons/AntDesign'
 import {isValidNumber} from "react-native-phone-number-input"
+import { set } from 'react-native-reanimated'
 
 const LocationController = require('../controllers/locationController')
 const TrackerController = require('../controllers/trackerController')
@@ -13,6 +14,8 @@ export default function Tracking({route}) {
   const appState = useRef('active')
   const isPermissionRequest = useRef(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [trackingDetails, setTrackingDetails] = useState(null);
+  const [recipient, setRecipient] = useState(null);
   const [contactsPermission, setContactsPermission] = useState(null)
   const [contactsList, setContactsList] = useState([])
   const [address, setAddress] = useState(null)
@@ -27,14 +30,18 @@ export default function Tracking({route}) {
     let mounted = true
     
     if (locationAccess == null || locationAccess != 'granted') {
+      isPermissionRequest.current = true
       checkLocationAccess(mounted)
     }
 
     if (contactsPermission === null || contactsPermission !== 'granted') {
+      isPermissionRequest.current = true
       handleContactsPermission(mounted)
     }
 
-    const trackingListener = AppState.addEventListener("change", nextAppState => {
+    getTrackingDetails()
+
+    /* const trackingListener = AppState.addEventListener("change", nextAppState => {
       console.log(isPermissionRequest.current)
       if (appState.current.match(/inactive|background/) && nextAppState === "active" && isPermissionRequest.current === false) {
         console.log("App has come to the foreground!");
@@ -43,14 +50,14 @@ export default function Tracking({route}) {
 
         console.log("Checking Location Access...");
         isPermissionRequest.current = true 
-        checkLocationAccess()
+        checkLocationAccess(mounted)
       }
       appState.current = nextAppState;
       console.log("AppState", appState.current);
-    })
+    }) */
 
     return () => {
-      trackingListener?.remove()
+      //trackingListener.remove()
       mounted = false
     }
   }, [])
@@ -130,17 +137,18 @@ export default function Tracking({route}) {
     await LocationController.checkLocationServices()
     let enabled = LocationController.locationEnabled
 
+    console.log('Enabled?', enabled)
+
     if (!enabled) {
       if (!mounted) return
       (locationError === 'Please turn on Location') ? null : setLocationError('Please turn on Location')
-      return
     }
 
     if (locationEnabled !== enabled) {
       if (!mounted) return
       setLocationEnabled(enabled)
-      console.log('Location Enabled set to ', enabled)
-      if (!mounted) return
+      console.log('Location Enabled set to', enabled)
+      if (!enabled || !mounted) return
       setLocationError(null)
     }
   }
@@ -159,15 +167,45 @@ export default function Tracking({route}) {
 
   const handleSubmit = async () => {
     setErrorMsg('')
+    await checkLocationEnabled(true)
 
     if (!isValid(phoneNumber)) return
 
-    await LocationController.requestBackgroundPermissions()
+    console.log(locationEnabled)
+    
+    if (!location || location === null || !LocationController.locationEnabled) return setErrorMsg('No location. Please give permission to access location and turn on location')
 
-    console.log(location)
+    let backgroundPermission = await LocationController.Location.getBackgroundPermissionsAsync()
 
-    // TODO
-    // Begin Tracking and Sending Data to Firebase
+    if (!backgroundPermission.granted) {
+      Alert.alert(
+        "Background Location Permission",
+        "Tracking needs location permission to be set on 'always' to let the app run on background.\n\n" +
+        "To turn this on, open the app settings > Permissions > Location",
+        [
+          {
+            text: "Cancel"
+          },
+          {
+            text: "Open Settings",
+            onPress: () => LocationController.requestBackgroundPermissions()
+          }
+        ]
+      )
+
+      return
+    }
+
+    const details = {
+      isTracking: true,
+      recipient: recipient
+    }
+
+    await TrackerController.saveTrackingDetails(details)
+
+    setTrackingDetails(details)
+
+    await LocationController.startTracking()
   }
 
   const handleContactsPermission = async (mounted) => {
@@ -203,7 +241,7 @@ export default function Tracking({route}) {
 
   function isValid(phoneNumber) {
     if (phoneNumber.length === 0) {
-      setErrorMsg('Please enter a number')
+      setErrorMsg('Please enter a recipient')
       return false
     }
     let formattedNumber = phoneNumber.replace(/^0+/, '+63')
@@ -223,17 +261,49 @@ export default function Tracking({route}) {
 
   const turnOnGPS = async () => {
     await LocationController.getLocation()
-    checkLocationEnabled()
+    checkLocationEnabled(true)
   }
 
-  const selectContact = (number) => {
+  const selectContact = (name, number) => {
     setPhoneNumber(number)
+    setErrorMsg('')
+    setRecipient({
+      name: name,
+      number: number
+    })
     setModalVisible(false)
   }
 
   const openAppSettings = () => {
     setModalVisible(false)
     LocationController.openSettings()
+  }
+
+  const getTrackingDetails = async () => {
+    const details = await TrackerController.getTrackingDetails()
+
+    console.log(details)
+
+    if (!details) {
+      setTrackingDetails({
+        isTracking: false
+      })
+
+      return
+    }
+
+    setTrackingDetails(details)
+  }
+
+  const stopTracking = async () => {
+    const details = {
+      isTracking: false
+    }
+    await LocationController.stopTracking()
+      .then(()=> {
+        setTrackingDetails(details)
+        TrackerController.saveTrackingDetails(details)
+      })
   }
 
   let locationText = ''
@@ -244,13 +314,13 @@ export default function Tracking({route}) {
     locationText = '\nLoading...'
   }
   
-  if (location && address) {
+  if (location && address && locationEnabled) {
     locationText = ("\n(" + location.latitude + " °lat, " + location.longitude + " °lng)" + "\n" + address.complete + "\n")
   }
 
   const renderItem = ({item}) => (
           <ContactsItem 
-            onPress = {(number) => selectContact(number)}
+            onPress = {(name, number) => selectContact(name, number)}
             displayName= {item.displayName}
             familyName = {item.familyName}
             givenName = {item.givenName}
@@ -259,7 +329,7 @@ export default function Tracking({route}) {
             thumbnailPath = {item.thumbnailPath}
           />)
 
-  return (
+  return trackingDetails && (
     <View style={s.trackingScreenBody}>
       <View style={s.locationFieldContainer}>
         <Text style={s.text}>My Current Location:</Text>
@@ -273,28 +343,48 @@ export default function Tracking({route}) {
                 <Text style={s.buttonText}>{"Open App Settings"}</Text>
             </TouchableOpacity> : null}
       </View>
-      <View>
-        <Text style={s.text}>Send My Location To</Text>
-        <View style={s.contactFieldContainer}>
-          <TextInput 
-            placeholder='Enter 11-digit Phone Number'
-            keyboardType='number-pad'
-            style={s.phoneInput}
-            value={phoneNumber}
-            onChangeText={(text) => onChanged(text)}
-          />
-          <TouchableOpacity style={s.contactsButtonContainer} onPress={() => openModal()}>
-            <Icon style={s.contactsButton} size={36} name={'contacts'}/>
+      {
+        trackingDetails.isTracking ?
+        <>
+          <View>
+            <Text style={s.text}>Sending My Location To</Text>
+            <View>
+              <Text style={s.text}>{trackingDetails.recipient.name}</Text>
+            </View>
+            <View>
+              <Text style={s.text}>{trackingDetails.recipient.number}</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={s.trackingButton} activeOpacity={0.8} onPress={() => stopTracking()}>
+            <Text style={s.trackingButtonText}>Stop Tracking</Text>
           </TouchableOpacity>
-        </View>
-        <View>
-          {(errorMsg !== '') && (<Text style={s.errorText}>{errorMsg}</Text>)}
-        </View>
-      </View>
-      
-      <TouchableOpacity style={s.trackingButton} activeOpacity={0.8} onPress={() => handleSubmit()}>
-        <Text style={s.trackingButtonText}>Track and Send My Location</Text>
-      </TouchableOpacity>
+        </>
+        :
+        <>
+          <View>
+            <Text style={s.text}>Send My Location To</Text>
+            <View style={s.contactFieldContainer}>
+              <TextInput 
+                placeholder='Enter 11-digit Phone Number'
+                keyboardType='number-pad'
+                style={s.phoneInput}
+                value={phoneNumber}
+                onChangeText={(text) => onChanged(text)}
+              />
+              <TouchableOpacity style={s.contactsButtonContainer} onPress={() => openModal()}>
+                <Icon style={s.contactsButton} size={36} name={'contacts'}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            {(errorMsg !== '') && (<Text style={s.errorText}>{errorMsg}</Text>)}
+          </View>
+          <TouchableOpacity style={s.trackingButton} activeOpacity={0.8} onPress={() => handleSubmit()}>
+            <Text style={s.trackingButtonText}>Track and Send My Location</Text>
+          </TouchableOpacity>
+        </>
+      }
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -339,3 +429,4 @@ export default function Tracking({route}) {
     </View>
   )
 }
+
