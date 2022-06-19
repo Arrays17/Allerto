@@ -7,7 +7,7 @@ import Emergency from './emergency';
 import Alerts from '../screens/alerts';
 import Tracking from '../screens/tracking';
 import Settings from '../screens/settings';
-import AllerTips from '../routes/allertips';
+import AllerTips from './allertips';
 
 const Module = createBottomTabNavigator();
 

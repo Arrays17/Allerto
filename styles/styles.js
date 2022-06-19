@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
 
     switch: {
         transform: [{
-            scaleX: 1.25}, 
+            scaleX: 1.25},
             {scaleY: 1.25
         }],
         position: 'absolute',
@@ -34,7 +34,7 @@ module.exports = StyleSheet.create({
     body: {
         flex: 1,
         color: 'white',
-        backgroundColor: '#212121',
+        backgroundColor: '#2c3e50',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -44,7 +44,7 @@ module.exports = StyleSheet.create({
         height: '100%',
         paddingVertical: 10,
         flexWrap: 'wrap',
-        backgroundColor: '#212121',
+        backgroundColor: '#2c3e50',
         justifyContent: 'center',
     },
 
@@ -86,7 +86,7 @@ module.exports = StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 1,
         textAlign: 'center'
-    }, 
+    },
 
     statusText: {
         color: 'white',
@@ -130,7 +130,7 @@ module.exports = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "gray",
         borderRadius: 20,
-        borderWidth: 3,
+        //borderWidth: 3,
         shadowColor: 'black',
         shadowOffset: {width: 5, height: -5},
         shadowOpacity: 0.9,
@@ -174,7 +174,7 @@ module.exports = StyleSheet.create({
     btn_911: {
         display: "flex",
         position: "absolute",
-        bottom: Dimensions.get('window').height * .01,
+        bottom: Dimensions.get('window').height * .03,
         flex: 1,
         alignContent: "center",
         textAlign: "center",
@@ -183,7 +183,7 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').height * .13,
         borderRadius: Dimensions.get('window').height * .13 / 2,
         backgroundColor: "gray",
-        borderColor: 'orange',
+        borderColor: '#2c3e50',
         borderWidth: 5,
     },
 
@@ -192,7 +192,7 @@ module.exports = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         letterSpacing: 3,
-        color: 'orange'
+        color: 'white'
     },
 
     // Emergency List Screen Styles\
@@ -287,20 +287,46 @@ module.exports = StyleSheet.create({
 
     // tips
     tips: {
+        backgroundColor: '#2c3e50',
+        textAlign: 'justify',
+    },
+    tipBody: {
         paddingHorizontal: 20,
         marginVertical: 20,
     },
     tipTitle: {
+        color: "orange",
+        fontSize: 24,
+        fontWeight: 'bold',
+        paddingTop: 20,
+        textAlign: 'center',
+    },
+    tipTitle2: {
+        color: "orange",
         fontSize: 20,
         fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    tipSubTitle: {
+        color: "orange",
+        fontSize: 20,
+        fontWeight: 'bold',
+        //paddingTop: 20,
     },
     tipContent: {
+        color: "white",
         textAlign: 'justify',
         lineHeight: 25,
     },
     tipSource:{
+        color: "white",
         fontStyle: "italic",
         textAlign: "right",
+    },
+    imageTip: {
+        flex: 1,
+        height: Dimensions.get('window').height * .3,
+        width: '100%',
     },
 
 })
