@@ -174,7 +174,7 @@ module.exports = StyleSheet.create({
     btn_911: {
         display: "flex",
         position: "absolute",
-        bottom: Dimensions.get('window').height * .03,
+        bottom: Dimensions.get('window').height * .01,
         flex: 1,
         alignContent: "center",
         textAlign: "center",
@@ -183,7 +183,7 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').height * .13,
         borderRadius: Dimensions.get('window').height * .13 / 2,
         backgroundColor: "gray",
-        borderColor: '#2c3e50
+        borderColor: '#2c3e50',
         borderColor: 'darkorange',
         borderWidth: 5,
     },
