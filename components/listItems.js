@@ -57,20 +57,30 @@ export default function ListItem(props) {
     }
 
     useEffect(() => {
+        let mounted = true
+
+        if (!mounted) return null
         getSettings()
         checkIfOnFavorites()
+
+        return () => mounted = false
     }, [])
 
     return (
         <>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => callNumber(number)} onLongPress={() => openModal()}>
+            <TouchableOpacity 
+                activeOpacity={0.8} 
+                onPress={
+                    number ? () => callNumber(number) : () => openMaps(name, coordinates.latitude, coordinates.longitude)} onLongPress={() => openModal()
+                }
+            >
                 <View style={s.itemContainer}>
                     <Text numberOfLines={1} style={s.itemName}>{name}</Text>
                     <Text style={s.itemDistance}>
                         {
                             (distanceSettings === 'miles') ? (distanceMiles + " mi")
                             : (distanceKilometers + " km")} away</Text>
-                    <Text style={s.itemNumber}>{number ? number : address}</Text>
+                    <Text style={s.itemNumber} numberOfLines={1}>{number ? number : address}</Text>
                 </View>
             </TouchableOpacity>
             <Modal

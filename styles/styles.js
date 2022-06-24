@@ -57,8 +57,8 @@ module.exports = StyleSheet.create({
     button: {
         padding: 15,
         marginVertical: 15,
-        backgroundColor: 'orange',
-        borderColor: 'orange',
+        backgroundColor: 'darkorange',
+        borderColor: 'darkorange',
         borderWidth: 1,
         borderRadius: 99,
     },
@@ -82,7 +82,7 @@ module.exports = StyleSheet.create({
 
     titleText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
         letterSpacing: 1,
         textAlign: 'center'
@@ -166,7 +166,7 @@ module.exports = StyleSheet.create({
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "orange",
+        color: "darkorange",
     },
 
     // 911 Button
@@ -183,7 +183,7 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').height * .13,
         borderRadius: Dimensions.get('window').height * .13 / 2,
         backgroundColor: "gray",
-        borderColor: 'orange',
+        borderColor: 'darkorange',
         borderWidth: 5,
     },
 
@@ -228,14 +228,14 @@ module.exports = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.8)',
     },
 
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: '50%',
+        marginVertical: '30%',
         marginHorizontal: '10%',
     },
 
@@ -243,7 +243,8 @@ module.exports = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        justifyContent: 'space-evenly',
+        padding: 5,
+        justifyContent: 'center',
         backgroundColor: "#252525",
     },
 
@@ -255,11 +256,8 @@ module.exports = StyleSheet.create({
     modalOption: {
         width: '100%',
         padding: 20,
-        borderTopColor: 'orange',
-        borderBottomColor: 'orange',
-        borderLeftColor: "#252525",
-        borderRightColor: "#252525",
-        borderWidth: 1
+        backgroundColor: 'rgba(255,130,0,0.7)',
+        marginBottom: 5,
     },
 
     // List Items Style
@@ -270,11 +268,11 @@ module.exports = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5,
         color: 'white',
-        backgroundColor: "orange",
+        backgroundColor: "darkorange",
         marginBottom: 10,
     },
     itemName: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: "bold",
     },
     itemDistance: {
@@ -282,7 +280,7 @@ module.exports = StyleSheet.create({
         fontStyle: "italic",
     },
     itemNumber: {
-        fontSize: 20,
+        fontSize: 16,
     },
 
     // tips
@@ -303,4 +301,90 @@ module.exports = StyleSheet.create({
         textAlign: "right",
     },
 
+    // Tracking Screen
+
+    trackingScreenBody: {
+        flex: 1,
+        paddingHorizontal: 20,
+        color: 'white',
+        backgroundColor: '#212121',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    },
+
+    phoneInput: {
+        flex: 0.97,
+        paddingHorizontal: 15,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        borderWidth: 1,
+        textAlign: 'center'
+    },
+
+    contactFieldContainer: {
+        width: '90%',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+        flexDirection: 'row',
+    }, 
+
+    contactsButtonContainer: {
+        backgroundColor: 'darkorange',
+        padding: 5,
+        borderRadius: 8,
+        borderWidth: 0,
+        justifyContent: 'center',
+        textAlign: 'center'
+    },
+
+    contactsButton: {
+        color: 'white',
+    },
+
+    trackingButton: {
+        padding: 30,
+        marginVertical: 20,
+        backgroundColor: 'darkorange',
+        borderColor: 'darkorange',
+        borderWidth: 5,
+        borderColor: 'darkorange',
+        borderRadius: 60,
+    },
+
+    trackingButtonText: {
+        color: '#212121',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+
+    contactsItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: 5,
+        marginBottom: 5,
+        backgroundColor: 'rgba(255,130,0,0.7)'
+    },
+
+    contactImageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        overflow: 'hidden'
+    },
+
+    contactImg: {
+        height: 50,
+        width: 50,
+    },
+
+    contactImgAlt: {
+        fontSize: 28
+    }
+
 })
+
+

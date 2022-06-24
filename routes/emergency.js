@@ -15,7 +15,7 @@ export default function Emergency() {
         options={{
           title: "Allerto",
           headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: 'orange', },
+          headerStyle: {backgroundColor: 'darkorange', },
           headerTitleStyle: {letterSpacing: 5}
         }}
       />
@@ -23,7 +23,7 @@ export default function Emergency() {
         options={{
           title: "Emergency",
           headerTitleAlign:'center',
-          headerStyle: {backgroundColor: 'orange'},
+          headerStyle: {backgroundColor: 'darkorange'},
           headerTitleStyle: {letterSpacing: 3}
           }}
       />

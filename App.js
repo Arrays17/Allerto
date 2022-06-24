@@ -37,7 +37,7 @@ export default function App() {
             options={{
               headerTitleAlign: 'center',
               headerStyle: {
-                backgroundColor: 'orange',
+                backgroundColor: 'darkorange',
               },
             }}/>
         </AuthStack.Navigator>
@@ -60,7 +60,7 @@ export default function App() {
             headerTitle: "Register Phone Number",
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: 'orange',
+              backgroundColor: 'darkorange',
             },
           }}/>
         <AuthStack.Screen
@@ -70,7 +70,7 @@ export default function App() {
             headerShown: false,
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: 'orange',
+              backgroundColor: 'darkorange',
             },
           }}/>
       </AuthStack.Navigator>

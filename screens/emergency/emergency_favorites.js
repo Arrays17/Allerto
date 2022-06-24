@@ -8,12 +8,12 @@ const s = require('../../styles/styles')
 export default function emergency_favorites(key) {
   const {keyword} = key;
   const storeKey = 'favorites_' + keyword
-  const [favoriteList, setFavoriteList] = useState(null)
+  const [favoriteList, setFavoriteList] = useState([])
   const [statusText, setStatusText] = useState('Loading...')
   const [fetching, setFetching] = useState(false)
 
   let stationName = ''
-  switch (keyword) {   // Set Name for Status Text
+  switch (keyword) { 
     case "police":
       stationName = 'Police'
       break;
@@ -37,44 +37,62 @@ export default function emergency_favorites(key) {
       break;
   }
 
-  const getFavoritesList = async () => {
-    await favoritesController.getFavorites(storeKey)
-    .then(List => {
-      setFetching(false)
-      if (favoriteList) // Exisiting Favorite List
-        if (List.length != favoriteList.length) {
-          setFavoriteList(List)
-        }
-  
-      if (!favoriteList) {
-        setFavoriteList(List)
-      }
-    })
-  }
+  useEffect(() => {
+    setFetching(false)
+  }, [])
 
   useEffect(() => {
     let mounted = true
 
     if (!fetching && mounted){
+      if (!mounted) return
       setFetching(true)
-      setTimeout(() => getFavoritesList(), 500)
+      fetchTimer(mounted)
     }
 
-    return () => mounted = false
-  }, [fetching])
+    return () => {
+      mounted = false
+      clearTimeout(fetchTimer)
+    }
+  }, [fetching, favoriteList])
 
 
   useEffect(() => {
     let mounted = true
+
+    if (!mounted) return
     setStatusText("Loading...");
 
-    if (favoriteList === null || JSON.stringify(favoriteList) === "[]") {
-      if (!mounted) return null
-      setTimeout(() => setStatusText("No " + stationName + " contact added to favorites..."), 2000)
+    loadingTimer(mounted)
+    
+    return () => {
+      mounted = false
+      clearTimeout(loadingTimer)
+    }
+  }, [favoriteList])
+
+  const getFavoritesList = async (mounted) => {
+    let List = await favoritesController.getFavorites(storeKey)
+    if (List.length == 0 ) return setFetching(false)
+
+    if (favoriteList.length > 0 && List.length != favoriteList.length && mounted == true) // Exisiting Favorite List
+      setFavoriteList(List)
+
+    if (favoriteList.length === 0 && mounted) {
+      setFavoriteList(List)
+      setStatusText("")
     }
     
-    return () => mounted = false
-  }, [favoriteList])
+    setFetching(false)
+  }
+
+  const fetchTimer = (mounted) => setTimeout(() => getFavoritesList(mounted), 1000)
+
+  const loadingTimer = (mounted) => setTimeout(() => {
+    if (favoriteList.length == 0 && mounted) {
+      setStatusText("No " + stationName + " contact added to favorites...")
+    }
+  }, 5000)
 
   const renderItem = ({item}) => (
     <ListItem 
@@ -87,12 +105,13 @@ export default function emergency_favorites(key) {
         distance={item.distance} 
         coordinates={item.coordinates} 
         keyword={keyword}
-    />)
+    />
+  )
 
   return (
     <View style={s.body}>
       {
-        (favoriteList != null && JSON.stringify(favoriteList) !== "[]") ? (
+        (favoriteList.length > 0) ? (
           <>
             <FlatList
             style={s.flatList}

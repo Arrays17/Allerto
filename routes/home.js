@@ -28,7 +28,7 @@ export default function Home() {
             headerTitle: "Disaster Alerts and Notifications",
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: 'orange',
+              backgroundColor: 'darkorange',
             },
             tabBarLabel: 'Alerts',
             tabBarIcon: ({ color, size }) => (
@@ -42,13 +42,14 @@ export default function Home() {
             headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: 'orange',
+              backgroundColor: 'darkorange',
             },
             tabBarLabel: 'Track Me',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />
             ),
-          }}/>
+          }}
+        />
         <Module.Screen
           name="Emergency"
           component={Emergency}
@@ -74,7 +75,7 @@ export default function Home() {
             headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: 'orange',
+              backgroundColor: 'darkorange',
             },
             tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
