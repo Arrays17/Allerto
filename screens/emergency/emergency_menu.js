@@ -8,7 +8,7 @@ const s = require('../../styles/styles');
 const LocationController = require('../../controllers/locationController')
 const TrackerController = require('../../controllers/trackerController')
 
-export default function Emergency({navigation}) {
+export default function Emergency({navigation}) 
 
   useEffect(async ()=> {
     await LocationController.requestForegroundPermissions()
