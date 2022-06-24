@@ -35,43 +35,43 @@ export default function AllerTIPS_Nav() {
         <AuthStack.Screen name="Menu" component={Menu} options={{
             title: "AllerTIPS",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 5}}}/>
         <AuthStack.Screen name="Earthquake" component={Earthquake} options={{
             title: "AllerTIPS: Earthquake",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="Landslide" component={Landslide} options={{
             title: "AllerTIPS: Landslide",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="Fire" component={Fire} options={{
             title: "AllerTIPS: Fire",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="Flood" component={Flood} options={{
             title: "AllerTIPS: Flood",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="Typhoon" component={Typhoon} options={{
             title: "AllerTIPS: Typhoon",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="VolcanicEruption" component={VolcanicEruption} options={{
             title: "AllerTIPS: Volcanic Eruption",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 2}}}/>
         <AuthStack.Screen name="FirstAid" component={FirstAid} options={{
             title: "AllerTIPS: First Aid",
             title: "AllerTIPS: FIrst Aid",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
         <AuthStack.Screen name="RoadSafety" component={RoadSafety} options={{
             title: "AllerTIPS: Road Safety",
@@ -86,7 +86,7 @@ export default function AllerTIPS_Nav() {
         <AuthStack.Screen name="SurvivalKit" component={SurvivalKit} options={{
             title: "AllerTIPS: Survivial Kit",
             headerTitleAlign:'center',
-            headerStyle: {backgroundColor: 'orange'},
+            headerStyle: {backgroundColor: 'darkorange'},
             headerTitleStyle: {letterSpacing: 3}}}/>
 
         <AuthStack.Screen name="FirstAidBasics" component={FirstAidBasics} options={{

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert } from 'react-native'
 
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const s = require('../styles/styles');
@@ -25,7 +26,33 @@ export default function AuthScreen({navigation}) {
 
     async function saveUser(user) {
         try {
-            const userDetails = JSON.stringify(user)
+            if (user.additionalUserInfo.isNewUser) {
+                const _user = user.user
+                await firestore().collection('users').doc(user.user.uid)
+                    .set({
+                        displayName: _user.displayName,
+                        email: _user.email,
+                        emailVerified: _user.emailVerified,
+                        isAnonymous: _user.isAnonymous,
+                        metadata: {
+                          creationTime: _user.metadata.creationTime,
+                          lastSignInTime: _user.metadata.lastSignInTime,
+                        },
+                        phoneNumber: _user.phoneNumber,
+                        photoURL: _user.photoURL,
+                        providerId: _user.providerId,
+                        tenantId: _user.tenantId,
+                        uid: _user.uid,
+                    })
+                    .then(() => {
+                        console.log("New User Added to Users Database");
+                    })
+                    .catch((error)=>{
+                        console.warn("Adding User to Firestore Failed");
+                    })
+            }
+
+            const userDetails = JSON.stringify(user.user)
             console.log(userDetails)
             await AsyncStorage.setItem('user', userDetails)
         } catch (e) {
