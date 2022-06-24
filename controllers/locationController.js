@@ -5,6 +5,8 @@ import { Linking } from 'react-native';
 
 const API_KEY = process.env.GOOGLE_API_KEY
 const LOCATION_TASK_NAME = 'background-location-tracking'
+const smsController = require('../apis/sms')
+const TrackerController = require('../controllers/trackerController')
 
 TaskManager.defineTask(LOCATION_TASK_NAME, ({data, error}) => {
     if (error) {
@@ -13,14 +15,27 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({data, error}) => {
     }
 
     ;(async () => {
-        const user = await AsyncStorage.getItem('user')
-        const parsedUser = JSON.parse(user)
-
         if (data) {
-            console.log(parsedUser.user.uid)
-            // TODO
-            // Send Location Data to Firebase Firestore 
-            // Send SMS to Recipient containing User Tracking Details
+            const user = await AsyncStorage.getItem('user')
+            const parsedUser = JSON.parse(user)
+            const {phoneNumber: sender} = parsedUser
+            const {recipient, trackingID} = await TrackerController.getTrackingDetails()
+            const trackingData = {
+                location: {
+                    latitude: data.locations[0].coords.latitude,
+                    longitude: data.locations[0].coords.longitude
+                },
+                recipient: recipient
+            }
+
+            console.log("Sending SMS");
+            await smsController.sendMessage(sender, recipient.number, data.locations[0].coords)
+                .then(()=>{console.log("SMS Sent Successfully");})
+                .catch((err)=> {console.warn(err);})
+
+            await TrackerController.saveToDatabase(parsedUser.uid, trackingID, trackingData)
+                .then(()=>{console.log("Database Updated Successfully");})
+                .catch((err)=> {console.warn(err);})
         }
     })()
 })
@@ -56,7 +71,8 @@ export const startTracking = async () => {
             notificationColor: "#50FA8200"
         },
         accuracy: Location.Accuracy.Highest,
-        timeInterval: 10000,
+        timeInterval: 60000,
+        distanceInterval: 100
     })
 }
 
@@ -95,10 +111,16 @@ export const requestForegroundPermissions = async () => {
 }
 
 export const setupAddress = async () => {
-    let {coords} = await Location.getCurrentPositionAsync({accuracy: 4})
+    console.log(API_KEY);
+     Location.setGoogleApiKey(API_KEY)
+    let {coords} = await Location.getCurrentPositionAsync({accuracy: 5})
     let {latitude, longitude} = coords
 
-    let place = await Location.reverseGeocodeAsync({latitude,longitude}).catch(()=> console.warn('Error with Reverse Geocoding'))
+    console.log({latitude,longitude});
+
+    let place = await Location.reverseGeocodeAsync({latitude,longitude}).catch((error)=> console.warn('Error with Reverse Geocoding', error))
+
+    if (!place) return
 
     if (place[0]) {
         let complete = (place[0].name != null ? place[0].name : '') + ' ' + (place[0].street != null ? place[0].street : '') + 

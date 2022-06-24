@@ -3,7 +3,8 @@ import { Text, View, TouchableOpacity, TextInput, Modal, TouchableWithoutFeedbac
 import ContactsItem from '../components/contactsItem'
 import Icon from 'react-native-vector-icons/AntDesign'
 import {isValidNumber} from "react-native-phone-number-input"
-import { set } from 'react-native-reanimated'
+import { randomCode } from '../utils/helpers'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LocationController = require('../controllers/locationController')
 const TrackerController = require('../controllers/trackerController')
@@ -28,16 +29,20 @@ export default function Tracking({route}) {
 
   useEffect (()=> {
     let mounted = true
-    
-    if (locationAccess == null || locationAccess != 'granted') {
-      isPermissionRequest.current = true
-      checkLocationAccess(mounted)
-    }
 
-    if (contactsPermission === null || contactsPermission !== 'granted') {
-      isPermissionRequest.current = true
-      handleContactsPermission(mounted)
-    }
+    LocationController.setGoogleAPI()
+    
+    ;(async()=>{
+      if (locationAccess == null || locationAccess != 'granted') {
+        isPermissionRequest.current = true
+        await checkLocationAccess(mounted)
+      }
+  
+      if (contactsPermission === null || contactsPermission !== 'granted') {
+        isPermissionRequest.current = true
+        await handleContactsPermission(mounted)
+      }
+    })()
 
     getTrackingDetails()
 
@@ -114,9 +119,7 @@ export default function Tracking({route}) {
   const checkLocationAccess = async (mounted) => {
     isPermissionRequest.current = true
     await LocationController.requestForegroundPermissions()
-    .then(() => {
-      isPermissionRequest.current = false
-    })
+    isPermissionRequest.current = false
     let status = LocationController.locationAccess
     if (status !== 'granted') {
       if (!mounted) return
@@ -170,8 +173,6 @@ export default function Tracking({route}) {
     await checkLocationEnabled(true)
 
     if (!isValid(phoneNumber)) return
-
-    console.log(locationEnabled)
     
     if (!location || location === null || !LocationController.locationEnabled) return setErrorMsg('No location. Please give permission to access location and turn on location')
 
@@ -196,9 +197,32 @@ export default function Tracking({route}) {
       return
     }
 
+    const user = await JSON.parse(await AsyncStorage.getItem('user'))
+    const result = await TrackerController.handleTrackingLimit(user.uid, 3)
+
+    if (result.isAtLimit) {
+      Alert.alert(
+        "Temporary Limit Reached",
+        "Allerto App pays for SMS services used to notify your recipient. To avoid spamming of recipient and high expenses for us, developers," +
+        " we temporarily put limit on this feature to allow tracking only once per 3 days. We hope to lift this limit as we further develop this" +
+        " app and get more funding so that our users can freely share their location with their contacts in times of emergencies.\n\n" + 
+        `Time Remaining: ${result.timeRemaining.hours > 1 ? result.timeRemaining.hours + 'hrs' :  result.timeRemaining.hours + 'hr'} and ` +
+        `${result.timeRemaining.minutes > 1 ? result.timeRemaining.minutes + 'mins' :  result.timeRemaining.hours + 'min'}`,
+        [{text: "I Understand"}]
+      )
+
+      return
+    }
+    
+    const trackingID = randomCode(6, 'aA#')
+    console.log(trackingID)
+
     const details = {
       isTracking: true,
-      recipient: recipient
+      trackingID: trackingID,
+      recipient: recipient,
+      location: location,
+      address: address
     }
 
     await TrackerController.saveTrackingDetails(details)
@@ -206,6 +230,13 @@ export default function Tracking({route}) {
     setTrackingDetails(details)
 
     await LocationController.startTracking()
+
+    Alert.alert(
+      "Location Tracking Started",
+      "Allerto App will now keep track of your device' location and send location updates to your chosen recipient.\n\n" +
+      "Keep this app running on background. Closing the application may terminate location tracking",
+      [{text: "Close"}]
+    )
   }
 
   const handleContactsPermission = async (mounted) => {
@@ -264,14 +295,16 @@ export default function Tracking({route}) {
     checkLocationEnabled(true)
   }
 
-  const selectContact = (name, number) => {
-    setPhoneNumber(number)
+  const selectContact = async (name, number) => {
+    let formattedNumber = number.replace(/^0+/, '+63')
+    setPhoneNumber(formattedNumber)
     setErrorMsg('')
+    if (recipient && recipient?.number === formattedNumber) return
     setRecipient({
       name: name,
-      number: number
+      number: formattedNumber
     })
-    setModalVisible(false)
+    if (modalVisible) setModalVisible(false)
   }
 
   const openAppSettings = () => {
@@ -299,10 +332,17 @@ export default function Tracking({route}) {
     const details = {
       isTracking: false
     }
+    setTrackingDetails(details)
+    setPhoneNumber('')
+    setRecipient(null)
+    TrackerController.saveTrackingDetails(details)
     await LocationController.stopTracking()
       .then(()=> {
-        setTrackingDetails(details)
-        TrackerController.saveTrackingDetails(details)
+        Alert.alert(
+          "Tracking Stopped",
+          "Location Tracking Successfully Terminated",
+          [{text: "OK"}]
+        )
       })
   }
 
@@ -370,6 +410,7 @@ export default function Tracking({route}) {
                 style={s.phoneInput}
                 value={phoneNumber}
                 onChangeText={(text) => onChanged(text)}
+                onEndEditing={() => {selectContact(phoneNumber, phoneNumber);}}
               />
               <TouchableOpacity style={s.contactsButtonContainer} onPress={() => openModal()}>
                 <Icon style={s.contactsButton} size={36} name={'contacts'}/>

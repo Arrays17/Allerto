@@ -20,6 +20,8 @@
     "@react-navigation/material-top-tabs": "^6.2.1",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "expo": "~43.0.2",
     "expo-firebase-recaptcha": "~2.0.2",
     "expo-linear-gradient": "~10.0.3",
@@ -28,6 +30,7 @@
     "expo-status-bar": "~1.1.0",
     "expo-task-manager": "~10.0.3",
     "expo-updates": "~0.10.13",
+    "express": "^4.18.1",
     "firebase": "^9.8.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -47,7 +50,8 @@
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.13.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "twilio": "^3.77.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
