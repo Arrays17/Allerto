@@ -10,7 +10,7 @@ module.exports = StyleSheet.create({
 
     switchContainer: {
         width: Dimensions.get('window').width,
-        backgroundColor: 'white',
+        backgroundColor: '#ffdec4',
         position: 'absolute',
         top: 0,
         padding: 15,
@@ -34,7 +34,7 @@ module.exports = StyleSheet.create({
     body: {
         flex: 1,
         color: 'white',
-        backgroundColor: '#2c3e50',
+        backgroundColor: '#1c0d00',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -44,7 +44,7 @@ module.exports = StyleSheet.create({
         height: '100%',
         paddingVertical: 10,
         flexWrap: 'wrap',
-        backgroundColor: '#2c3e50',
+        backgroundColor: '#1c0d00',
         justifyContent: 'center',
     },
 
@@ -145,7 +145,7 @@ module.exports = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         fontWeight: "bold",
-        color: 'white',
+        color: '#001224',
         letterSpacing: 2,
     },
     serviceTitle: {
@@ -153,20 +153,20 @@ module.exports = StyleSheet.create({
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "white",
+        color: "#ffdec4",
     },
     serviceIcon: {
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "white",
+        color: "#ffdec4",
     },
     pressed: {
-        opacity: 0.6,
+        opacity: 0.8,
         textAlign: 'center',
         fontWeight: "bold",
         letterSpacing: 2,
-        color: "darkorange",
+        color: "white",
     },
 
     // 911 Button
@@ -185,7 +185,6 @@ module.exports = StyleSheet.create({
         backgroundColor: "gray",
         borderColor: '#2c3e50',
         borderColor: 'darkorange',
-        borderWidth: 5,
     },
 
     text_911: {
@@ -193,13 +192,13 @@ module.exports = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         letterSpacing: 3,
-        color: 'white'
+        color: '#ffdec4'
     },
 
     // Emergency List Screen Styles\
 
     emergencyListScreenBody: {
-        backgroundColor: '#212121',
+        backgroundColor: '#1c0d00',
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
@@ -334,7 +333,7 @@ module.exports = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         color: 'white',
-        backgroundColor: '#212121',
+        backgroundColor: '#1c0d00',
         alignItems: 'center',
         justifyContent: 'space-around',
     },

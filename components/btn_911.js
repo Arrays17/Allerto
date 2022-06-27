@@ -7,10 +7,10 @@ export default btn_911 = () => {
 
 
     return (
-        <LinearGradient colors={['#fe8c00','#f83600']} style={s.btn_911}>
-        <TouchableOpacity activeOpacity={0.7} onPress={()=>call911()}>
-            <Text style={s.text_911}>911</Text>
-        </TouchableOpacity>
+        <LinearGradient colors={['#FF8E00','#D04A07']} style={s.btn_911}>
+            <TouchableOpacity style={{flex: 1, width: '100%', height: '100%', justifyContent: 'center'}} activeOpacity={0.7} onPress={()=>call911()}>
+                <Text style={s.text_911}>911</Text>
+            </TouchableOpacity>
         </LinearGradient>
     )
 }

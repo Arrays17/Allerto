@@ -73,7 +73,7 @@ export default function emergency_favorites(key) {
 
   const getFavoritesList = async (mounted) => {
     let List = await favoritesController.getFavorites(storeKey)
-    if (List.length == 0 ) return setFetching(false)
+    if (!List || List?.length == 0 ) return setFetching(false)
 
     if (favoriteList.length > 0 && List.length != favoriteList.length && mounted == true) // Exisiting Favorite List
       setFavoriteList(List)

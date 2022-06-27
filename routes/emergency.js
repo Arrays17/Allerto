@@ -15,17 +15,23 @@ export default function Emergency() {
         options={{
           title: "Allerto",
           headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: 'darkorange', },
-          headerTitleStyle: {letterSpacing: 5}
+          headerStyle: {backgroundColor: '#FD7702' },
+          headerTitleStyle: {
+            color: 'white',
+            letterSpacing: 5
+          }
         }}
       />
       <AuthStack.Screen name="EmergencyList" component={EmergencyList}
         options={{
           title: "Emergency",
           headerTitleAlign:'center',
-          headerStyle: {backgroundColor: 'darkorange'},
-          headerTitleStyle: {letterSpacing: 3}
-          }}
+          headerStyle: {backgroundColor: '#FD7702'},
+          headerTitleStyle: {
+            color: 'white',
+            letterSpacing: 5
+          }
+        }}
       />
     </AuthStack.Navigator>
   );
