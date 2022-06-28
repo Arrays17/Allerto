@@ -3,18 +3,14 @@ import React, { useState, useEffect } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const AlertsController = require('../controllers/alertsController')
 const s = require('../styles/styles');
 
 export default function Alerts() {
   const [isEnabled, setIsEnabled] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState)
-  }
-
-  async function updateSettings() {
-    await AsyncStorage.setItem('alertSettings', JSON.stringify(isEnabled))
-  }
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -23,6 +19,8 @@ export default function Alerts() {
       if (alertSettings !== null)
         setIsEnabled(alertSettings)
     })()
+
+    checkStatus()
   }, [])
 
   useEffect(()=>{
@@ -39,13 +37,36 @@ export default function Alerts() {
 
   }, [isEnabled])
 
+  const updateSettings = async () => {
+    await AsyncStorage.setItem('alertSettings', JSON.stringify(isEnabled))
+  }
+
+  const checkStatus = async () => {
+    console.log("Checking Alerts and Notification Status");
+    const result = await AlertsController.checkStatusAsync()
+    setStatus(result.status);
+    setIsRegistered(result.isRegistered);
+  }
+  
+  const toggleSwitch = async () => {
+    setIsEnabled(previousState => !previousState)
+
+    if (isRegistered) {
+      await AlertsController.unregisterBackgroundFetchAsync();
+    } else {
+      await AlertsController.registerBackgroundFetchAsync()
+    }
+
+    checkStatus()
+  }
+
   return (
     <View style={s.body}>
       <View style={s.switchContainer}>
         <Switch
           accessibilityLabel='Alerts and Notification'
           style={s.switch}
-          trackColor={{true: "#ffd9bd", false: "gray"}}
+          trackColor={{true: "#f98c40", false: "gray"}}
           thumbColor={isEnabled ? "orange" : "white"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}

@@ -32,6 +32,15 @@ export default function Home() {
           headerShown: false,
         }}>
         <Module.Screen
+          name="Emergency"
+          component={Emergency}
+          options={{
+            tabBarLabel: 'Emergency',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="phone" color={color} size={size} />
+            ),
+          }}/>
+        <Module.Screen
           name="Alerts"
           component={Alerts}
           options={{
@@ -56,15 +65,6 @@ export default function Home() {
           }}
         />
         <Module.Screen
-          name="Emergency"
-          component={Emergency}
-          options={{
-            tabBarLabel: 'Emergency',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="phone" color={color} size={size} />
-            ),
-          }}/>
-        <Module.Screen
           name="AllerTIPS"
           component={AllerTips}
           options={{
@@ -73,7 +73,7 @@ export default function Home() {
               <MaterialCommunityIcons name="lightbulb-on" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen
+        {/* <Module.Screen
           name="Settings"
           component={Settings}
           options={{
@@ -83,7 +83,7 @@ export default function Home() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="cog" color={color} size={size} />
             ),
-          }}/>
+          }}/> */}
       </Module.Navigator>
   );
 }
