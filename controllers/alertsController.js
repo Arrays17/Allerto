@@ -8,6 +8,11 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const now = Date.now();
   
     console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+
+    const DB = alertsDB.doc('general').get({source: 'server'})
+
+    await checkPhivolcsDB(DB)
+    await checkPagasaDB(DB)
   
     // Be sure to return the successful result type!
     return BackgroundFetch.BackgroundFetchResult.NewData;
@@ -35,4 +40,12 @@ export const checkStatusAsync = async () => {
         status,
         isRegistered
     }
+}
+
+const checkPhivolcsDB = async (DB) => {
+
+}
+
+const checkPagasaDB = async (DB) => {
+    
 }
