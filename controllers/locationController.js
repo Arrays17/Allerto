@@ -8,28 +8,30 @@ const LOCATION_TASK_NAME = 'background-location-tracking'
 const smsController = require('../apis/sms')
 const TrackerController = require('../controllers/trackerController')
 
-TaskManager.defineTask(LOCATION_TASK_NAME, ({data, error}) => {
+TaskManager.defineTask(LOCATION_TASK_NAME, ({data: {locations}, error}) => {
     if (error) {
         console.warn('Location Task Error:', error.message)
         return
     }
 
+    const [location] = locations
+
     ;(async () => {
-        if (data) {
+        if (location) {
             const user = await AsyncStorage.getItem('user')
             const parsedUser = JSON.parse(user)
             const {phoneNumber: sender} = parsedUser
             const {recipient, trackingID} = await TrackerController.getTrackingDetails()
             const trackingData = {
                 location: {
-                    latitude: data.locations[0].coords.latitude,
-                    longitude: data.locations[0].coords.longitude
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude
                 },
                 recipient: recipient
             }
 
             console.log("Sending SMS");
-            await smsController.sendMessage(sender, recipient.number, data.locations[0].coords)
+            await smsController.sendMessage(sender, recipient.number, location.coords)
                 .then(()=>{console.log("SMS Sent Successfully");})
                 .catch((err)=> {console.warn(err);})
 
@@ -111,8 +113,7 @@ export const requestForegroundPermissions = async () => {
 }
 
 export const setupAddress = async () => {
-    console.log(API_KEY);
-     Location.setGoogleApiKey(API_KEY)
+    Location.setGoogleApiKey(API_KEY)
     let {coords} = await Location.getCurrentPositionAsync({accuracy: 5})
     let {latitude, longitude} = coords
 

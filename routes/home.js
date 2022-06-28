@@ -15,11 +15,31 @@ export default function Home() {
   return (
       <Module.Navigator
         initialRouteName='Emergency'
-        backBehavior='history'
+        safeAreaInsets={{top: 0}}
+        backBehavior='initialRoute'
         screenOptions={{
           tabBarActiveTintColor: 'darkorange',
-          headerShown: false
+          headerStyle: {
+            backgroundColor: '#FD7702',
+          },
+          headerTitleStyle: {
+            color: 'white'
+          },
+          tabBarInactiveBackgroundColor: '#fd7702',
+          tabBarInactiveTintColor: '#ffdec4',
+          tabBarActiveBackgroundColor: '#d04a07',
+          tabBarActiveTintColor: '#ffdec4',
+          headerShown: false,
         }}>
+        <Module.Screen
+          name="Emergency"
+          component={Emergency}
+          options={{
+            tabBarLabel: 'Emergency',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="phone" color={color} size={size} />
+            ),
+          }}/>
         <Module.Screen
           name="Alerts"
           component={Alerts}
@@ -27,9 +47,6 @@ export default function Home() {
             headerShown: true,
             headerTitle: "Disaster Alerts and Notifications",
             headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: 'darkorange',
-            },
             tabBarLabel: 'Alerts',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="alert" color={color} size={size} />
@@ -41,24 +58,12 @@ export default function Home() {
           options={{
             headerShown: true,
             headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: 'darkorange',
-            },
             tabBarLabel: 'Track Me',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="crosshairs-gps" color={color} size={size} />
             ),
           }}
         />
-        <Module.Screen
-          name="Emergency"
-          component={Emergency}
-          options={{
-            tabBarLabel: 'Emergency',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="phone" color={color} size={size} />
-            ),
-          }}/>
         <Module.Screen
           name="AllerTIPS"
           component={AllerTips}
@@ -68,20 +73,17 @@ export default function Home() {
               <MaterialCommunityIcons name="lightbulb-on" color={color} size={size} />
             ),
           }}/>
-        <Module.Screen
+        {/* <Module.Screen
           name="Settings"
           component={Settings}
           options={{
             headerShown: true,
             headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: 'darkorange',
-            },
             tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="cog" color={color} size={size} />
             ),
-          }}/>
+          }}/> */}
       </Module.Navigator>
   );
 }

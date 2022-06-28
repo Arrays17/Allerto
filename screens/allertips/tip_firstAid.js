@@ -10,15 +10,15 @@ export default function AllerTips({navigation}){
                     <ServiceButton onPress={()=>navigation.navigate("FirstAidBasics")}
                         title="First Aid Basics"
                         icon='medical-bag' />
-                    <ServiceButton onPress={()=>navigation.navigate("CPR")}
-                        title="CPR"
-                        icon='lifebuoy' />
-                    <ServiceButton onPress={()=>navigation.navigate("AED")}
-                        title="AED"
-                        icon='lifebuoy' />
                     <ServiceButton onPress={()=>navigation.navigate("BLS")}
                         title="BLS"
                         icon='lifebuoy' />
+                    <ServiceButton onPress={()=>navigation.navigate("CPR")}
+                        title="CPR"
+                        icon='heart-pulse' />
+                    <ServiceButton onPress={()=>navigation.navigate("AED")}
+                        title="AED"
+                        icon='aed' />
                     <ServiceButton onPress={()=>navigation.navigate("Burns")}
                         title="Burns"
                         icon='fire' />
@@ -27,10 +27,10 @@ export default function AllerTips({navigation}){
                         icon='heart-flash' />
                     <ServiceButton onPress={()=>navigation.navigate("Choking")}
                         title="Choking"
-                        icon='lifebuoy' />
+                        icon='lungs' />
                     <ServiceButton onPress={()=>navigation.navigate("Fainting")}
                         title="Fainting"
-                        icon='brush' />
+                        icon='person-falling' />
                     <ServiceButton onPress={()=>navigation.navigate("Fractures")}
                         title="Fractures"
                         icon='bone' />

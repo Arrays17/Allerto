@@ -23,6 +23,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "expo": "~43.0.2",
+    "expo-background-fetch": "~10.0.3",
     "expo-firebase-recaptcha": "~2.0.2",
     "expo-linear-gradient": "~10.0.3",
     "expo-location": "~13.0.4",
@@ -46,8 +47,9 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
+    "react-native-svg": "^12.3.0",
     "react-native-tab-view": "^3.1.1",
-    "react-native-vector-icons": "^9.1.0",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.13.0",
     "react-navigation": "^4.4.4",
@@ -55,7 +57,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3"
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "react-native-svg-transformer": "^1.0.0"
   },
   "private": true
 }

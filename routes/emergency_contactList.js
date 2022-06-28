@@ -13,14 +13,14 @@ export default function Emergency_ContactList({route}) {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'darkorange',
-        tabBarStyle: {backgroundColor: 'white'},
-        tabBarIndicatorStyle: {backgroundColor: 'darkorange'}}}
+        tabBarActiveTintColor: '#d04a07',
+        tabBarStyle: {backgroundColor: '#ffdec4'},
+        tabBarIndicatorStyle: {backgroundColor: '#d04a07'}}}
     >
         <Tab.Screen name="EmergencyContactList" 
            children={()=><EmergencyContactList  keyword={keyword}/>}
-           options={{ 
-             tabBarLabel: headerTitle,}}
+           options={{
+              tabBarLabel: headerTitle,}}
         />
         <Tab.Screen name="Favorites"
            children={()=><Favorites  keyword={keyword}/>}
