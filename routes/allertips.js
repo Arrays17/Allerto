@@ -40,6 +40,14 @@ export default function AllerTIPS_Nav() {
               color: 'white',
               letterSpacing: 3
             }}}/>
+        <AuthStack.Screen name="FirstAid" component={FirstAid} options={{
+            title: "AllerTIPS: First Aid",
+            headerTitleAlign:'center',
+            headerStyle: {backgroundColor: '#FD7702'},
+            headerTitleStyle: {
+              color: 'white',
+              letterSpacing: 3
+            }}}/>
         <AuthStack.Screen name="Earthquake" component={Earthquake} options={{
             title: "AllerTIPS: Earthquake",
             headerTitleAlign:'center',
@@ -82,15 +90,6 @@ export default function AllerTIPS_Nav() {
             }}}/>
         <AuthStack.Screen name="VolcanicEruption" component={VolcanicEruption} options={{
             title: "AllerTIPS: Volcanic Eruption",
-            headerTitleAlign:'center',
-            headerStyle: {backgroundColor: '#FD7702'},
-            headerTitleStyle: {
-              color: 'white',
-              letterSpacing: 3
-            }}}/>
-        <AuthStack.Screen name="FirstAid" component={FirstAid} options={{
-            title: "AllerTIPS: First Aid",
-            title: "AllerTIPS: FIrst Aid",
             headerTitleAlign:'center',
             headerStyle: {backgroundColor: '#FD7702'},
             headerTitleStyle: {
