@@ -74,7 +74,7 @@ export default function emergencyContacts(key) {
 
     
         return () => {mounted = false}
-    }, [location, address, refreshing, emergencyList])
+    }, [location, refreshing])
 
     const checkLocationAccess = async (mounted) => {
         isPermissionRequest.current = true
@@ -91,7 +91,6 @@ export default function emergencyContacts(key) {
         if (status !== locationAccess) {
           if (!mounted) return
           setLocationAccess(status)
-          console.log('Location Access set to ', status)
           if (!mounted) return
           setErrorMsg(null)
         }
@@ -110,7 +109,6 @@ export default function emergencyContacts(key) {
             if (!mounted)
                 return;
             setLocationEnabled(enabled);
-            console.log('Location Enabled set to ', enabled);
             if (!mounted)
                 return;
             setErrorMsg(null);

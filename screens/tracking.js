@@ -315,8 +315,6 @@ export default function Tracking({route}) {
   const getTrackingDetails = async () => {
     const details = await TrackerController.getTrackingDetails()
 
-    console.log(details)
-
     if (!details) {
       setTrackingDetails({
         isTracking: false

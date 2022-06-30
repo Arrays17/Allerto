@@ -1,5 +1,6 @@
 import getDistanceUsingLatLng from '../utils/getDistanceUsingLatLng'
 import fetchPlaces from '../apis/fetchPlaces'
+import { createAndUpdateLastKnownLocation } from './locationController'
 
 const StorageController = require('../utils/asyncStorageController')
 
@@ -16,8 +17,6 @@ export async function handleLocation(key, location) {
     const oldLocationKey = 'previous_' + key + '_'
 
     const prevLocation = await StorageController.getPreviousLocation(previousLocationKey)
-    console.log('Current Location: ', location)
-    console.log('Previous Location: ', prevLocation)
 
     if (prevLocation === null) {
         StorageController.saveLocation(previousLocationKey, location) // No Location Saved Yet, Save Current Location
@@ -25,7 +24,6 @@ export async function handleLocation(key, location) {
     }
 
     var distanceFromPrevLocation = parseFloat(getDistanceUsingLatLng(prevLocation.latitude, prevLocation.longitude, location.latitude, location.longitude).kilometers)
-    console.log('Distance from Prev Loc: ', distanceFromPrevLocation)
 
     if (distanceFromPrevLocation >= 1) { // If location difference is greater than 1KM, return false -- fetch from Google API
         StorageController.saveLocation(previousLocationKey, location)
@@ -33,7 +31,6 @@ export async function handleLocation(key, location) {
     }
         
     const oldLocation = await StorageController.getPreviousLocation(oldLocationKey)
-    console.log('Old Location: ', oldLocation)
 
     if (oldLocation == null) {
         StorageController.saveLocation(previousLocationKey, location)
@@ -42,7 +39,6 @@ export async function handleLocation(key, location) {
     }
     
     var distanceFromOldLocation = parseFloat(getDistanceUsingLatLng(oldLocation.latitude, oldLocation.longitude, location.latitude, location.longitude).kilometers)
-    console.log('Distance from Old Loc: ', distanceFromOldLocation)
 
     if (distanceFromOldLocation + distanceFromPrevLocation >= 1) { // If location difference is greater than 1KM, return false -- fetch from Google API
         StorageController.saveLocation(previousLocationKey, location)
@@ -65,6 +61,10 @@ export async function getEmergencyList(location, keyword) {
     // then Push to Emergency List Array
 
     const isSameLocation = await handleLocation(keyword, location)
+
+    if (!isSameLocation) {
+        createAndUpdateLastKnownLocation(location)
+    }
 
     if (isSameLocation && JSON.stringify(List) != '[]' && List !== null) {
         console.log('Saved Data used')

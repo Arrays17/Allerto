@@ -51,3 +51,14 @@ export async function updateFavorites(key, data) {
     const favoritesString = JSON.stringify(data)
     await AsyncStorage.setItem(key, favoritesString)
 }
+
+export async function updateUserLocalData(data) {
+    const userString = JSON.stringify(data)
+    await AsyncStorage.setItem('user', userString)
+        .then(()=> {
+            console.log(`User Local Data Updated...`);
+        })
+        .catch((err)=> {
+            console.warn('Error on Updating User\'s Local Data:', err);
+        })
+}

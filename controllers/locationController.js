@@ -2,44 +2,44 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Linking } from 'react-native';
+import { updateUserLastKnownLocation } from '../database/firestore';
+import { updateUserLocalData } from '../utils/asyncStorageController';
 
 const API_KEY = process.env.GOOGLE_API_KEY
 const LOCATION_TASK_NAME = 'background-location-tracking'
 const smsController = require('../apis/sms')
 const TrackerController = require('../controllers/trackerController')
 
-TaskManager.defineTask(LOCATION_TASK_NAME, ({data: {locations}, error}) => {
+TaskManager.defineTask(LOCATION_TASK_NAME, async ({data: {locations}, error}) => {
     if (error) {
         console.warn('Location Task Error:', error.message)
         return
     }
 
     const [location] = locations
+    const user = await JSON.parse(await AsyncStorage.getItem('user'))
 
-    ;(async () => {
-        if (location) {
-            const user = await AsyncStorage.getItem('user')
-            const parsedUser = JSON.parse(user)
-            const {phoneNumber: sender} = parsedUser
-            const {recipient, trackingID} = await TrackerController.getTrackingDetails()
-            const trackingData = {
-                location: {
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude
-                },
-                recipient: recipient
-            }
+    await createAndUpdateLastKnownLocation(location)
+        .catch((err)=> {console.log('Error on Creating and Updating User\'s Last Known Location:', err)})
 
-            console.log("Sending SMS");
-            await smsController.sendMessage(sender, recipient.number, location.coords)
-                .then(()=>{console.log("SMS Sent Successfully");})
-                .catch((err)=> {console.warn(err);})
-
-            await TrackerController.saveToDatabase(parsedUser.uid, trackingID, trackingData)
-                .then(()=>{console.log("Database Updated Successfully");})
-                .catch((err)=> {console.warn(err);})
+    if (location) {
+        const {phoneNumber: sender} = user
+        const {recipient, trackingID} = await TrackerController.getTrackingDetails()
+        const trackingData = {
+            location: {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+            },
+            recipient: recipient
         }
-    })()
+
+        await smsController.sendMessage(sender, recipient.number, location.coords)
+            .catch((err)=> {console.warn(err);})
+
+        await TrackerController.saveToDatabase(user.uid, trackingID, trackingData)
+            .then(()=>{console.log("Tracking Data Uploaded to Database")})
+            .catch((err)=> {console.warn(err);})
+    }
 })
 
 let locationAccess
@@ -48,20 +48,18 @@ let locationData
 let locationAddress
 
 ;(async () => {
-    if (locationEnabled === null && locationAccess === 'granted') {
+    if (locationEnabled == null && locationAccess === 'granted') {
         await checkServices()
     }
 
-    if (locationData === null && locationEnabled) {
-        console.log('500')
+    if (locationData == null && locationEnabled) {
         await setupLocation()
     }
 
 })()
 
 export const startTracking = async () => {
-    const Tasks = await TaskManager.getRegisteredTasksAsync()
-    console.log(Tasks)
+
     if (await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME)) {
         await TaskManager.unregisterTaskAsync(LOCATION_TASK_NAME)
     }
@@ -117,8 +115,6 @@ export const setupAddress = async () => {
     let {coords} = await Location.getCurrentPositionAsync({accuracy: 5})
     let {latitude, longitude} = coords
 
-    console.log({latitude,longitude});
-
     let place = await Location.reverseGeocodeAsync({latitude,longitude}).catch((error)=> console.warn('Error with Reverse Geocoding', error))
 
     if (!place) return
@@ -141,6 +137,27 @@ export const getLocation = async () => {
 export const requestBackgroundPermissions = async () => {
     let {status} = await Location.requestBackgroundPermissionsAsync()
     return status
+}
+
+export const createAndUpdateLastKnownLocation = async (location) => {
+    await setupAddress()
+    const address = locationAddress.complete
+    const user = await JSON.parse(await AsyncStorage.getItem('user'))
+    const {latitude, longitude} = location || location.coords
+
+    const locationData = {
+        latitude: latitude,
+        longitude: longitude,
+        address: address
+    }
+
+    const newLocalUserData = {
+        ...user,
+        lastKnownLocation: locationData
+    }
+
+    await updateUserLastKnownLocation(user.uid, locationData)
+    await updateUserLocalData(newLocalUserData)
 }
 
 export {

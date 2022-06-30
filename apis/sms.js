@@ -5,8 +5,11 @@ export const sendMessage = async (sender, recipient, location) => {
         " Their current location: maps.google.com/?q=" + latitude + "," + longitude
 
     fetch(`https://allerto-server.herokuapp.com/send-text?recipient=${recipient}&messageContent=${messageContent}`)
-        .then(()=> {
-            console.log("SMS Sent")
+        .then((res)=> {
+            return res.json()
+        })
+        .then((res) => {
+            console.log(res);
         })
         .catch((err) => {
             console.warn("Sending SMS Error:", err)

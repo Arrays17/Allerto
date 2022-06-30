@@ -12,6 +12,8 @@ export default function emergency_favorites(key) {
   const [statusText, setStatusText] = useState('Loading...')
   const [fetching, setFetching] = useState(false)
 
+  let timeOuts = []
+
   let stationName = ''
   switch (keyword) { 
     case "police":
@@ -52,8 +54,10 @@ export default function emergency_favorites(key) {
 
     return () => {
       mounted = false
-      clearTimeout(fetchTimer)
-    }
+      timeOuts.forEach(timeout => {
+          clearTimeout(timeout)
+        });
+      }
   }, [fetching, favoriteList])
 
 
@@ -67,7 +71,9 @@ export default function emergency_favorites(key) {
     
     return () => {
       mounted = false
-      clearTimeout(loadingTimer)
+      timeOuts.forEach(timeout => {
+          clearTimeout(timeout)
+      });
     }
   }, [favoriteList])
 
@@ -86,13 +92,13 @@ export default function emergency_favorites(key) {
     setFetching(false)
   }
 
-  const fetchTimer = (mounted) => setTimeout(() => getFavoritesList(mounted), 1000)
+  const fetchTimer = (mounted) => timeOuts.push(setTimeout(() => getFavoritesList(mounted), 1000))
 
-  const loadingTimer = (mounted) => setTimeout(() => {
+  const loadingTimer = (mounted) => timeOuts.push(setTimeout(() => {
     if (favoriteList.length == 0 && mounted) {
       setStatusText("No " + stationName + " contact added to favorites...")
     }
-  }, 5000)
+  }, 5000))
 
   const renderItem = ({item}) => (
     <ListItem 
