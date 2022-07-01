@@ -10,7 +10,7 @@ import AuthScreen from './screens/authScreen';
 const AuthStack = createStackNavigator();
 PushNotification.createChannel({
   channelId: 'allerto-alerts-notification-channel-42069',
-  channelName: 'Allerto Notifcation Channel',
+  channelName: 'Allerto Disaster Alerts and Notification',
   channelDescription: 'Notification Channel for Allerto App',
   playSound: false,
   soundName: 'default',
