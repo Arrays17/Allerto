@@ -6,10 +6,15 @@ const detailsURL = 'https://maps.googleapis.com/maps/api/place/details/json?fiel
 
 export default fetchPlaces = (coordinates, keyword) => {
     let {latitude, longitude} = coordinates;
+    let radius = 2000
     const placesID = []
 
+    if (keyword == 'redcross' || keyword == 'towing') radius = 4000
+
+    if (keyword == 'disaster') radius = 5000
+
     return new Promise(function(resolve, reject){
-        fetch(URL + `${latitude},${longitude}&rankby=distance&type=${keyword}&key=${apiKey}`)
+        fetch(URL + `${latitude},${longitude}&radius=${radius}&keyword=${keyword}&key=${apiKey}`)
         .then(res => res.json())
         .then(res => {
             for (let place of res.results){
