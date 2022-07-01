@@ -76,7 +76,6 @@ export default function Tracking({route}) {
 
     return () => {
       mounted = false
-      console.log('Tracking Screen Unmounts')
     }
   }, [locationAccess])
   
@@ -130,7 +129,6 @@ export default function Tracking({route}) {
     if (status !== locationAccess) {
       if (!mounted) return
       setLocationAccess(status)
-      console.log('Location Access set to ', status)
       if (!mounted) return
       setLocationError(null)
     }
@@ -140,8 +138,6 @@ export default function Tracking({route}) {
     await LocationController.checkLocationServices()
     let enabled = LocationController.locationEnabled
 
-    console.log('Enabled?', enabled)
-
     if (!enabled) {
       if (!mounted) return
       (locationError === 'Please turn on Location') ? null : setLocationError('Please turn on Location')
@@ -150,7 +146,6 @@ export default function Tracking({route}) {
     if (locationEnabled !== enabled) {
       if (!mounted) return
       setLocationEnabled(enabled)
-      console.log('Location Enabled set to', enabled)
       if (!enabled || !mounted) return
       setLocationError(null)
     }
@@ -215,7 +210,6 @@ export default function Tracking({route}) {
     }
     
     const trackingID = randomCode(6, 'aA#')
-    console.log(trackingID)
 
     const details = {
       isTracking: true,

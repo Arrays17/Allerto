@@ -158,6 +158,8 @@ export const createAndUpdateLastKnownLocation = async (location) => {
 
     await updateUserLastKnownLocation(user.uid, locationData)
     await updateUserLocalData(newLocalUserData)
+
+    return locationData
 }
 
 export {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function getDistanceUsingLatLng(lat1, lng1, lat2, lng2) {
     // Converting coordinates from degrees to radians
     var Lat1 = degToRad(lat1)

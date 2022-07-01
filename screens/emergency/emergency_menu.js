@@ -32,19 +32,19 @@ export default function Emergency({navigation}) {
       <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
         {
           headerTitle: "Fire Stations",
-          keyword: "fire_station"
+          keyword: "firestation"
         }
         )} title="Fire Station" icon='fire' />
       <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
         {
           headerTitle: "Road and Traffic",
-          keyword: "road_traffic"
+          keyword: "towing"
         }
         )} title="Road and Traffic" icon='traffic-cone' />
       <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
         {
           headerTitle: "Red Cross Hotlines",
-          keyword: "red_cross"
+          keyword: "redcross"
         }
         )} title="Red Cross" icon='hospital' />
       <ServiceButton onPress={()=>navigation.navigate("EmergencyList", 
