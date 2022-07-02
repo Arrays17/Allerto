@@ -121,9 +121,8 @@ export const setupAddress = async () => {
 
     if (place[0]) {
         let complete = (place[0].name != null ? place[0].name : '') + ' ' + (place[0].street != null ? place[0].street : '') + 
-            (place[0].street != null ? ' street' : '') + ', ' + (place[0].city != null ? place[0].city : '') + 
-            (place[0].city != null ? ' City,' : '') + ' ' + (place[0].region != null ? place[0].region : '') + ', ' +
-            (place[0].country != null ? place[0].country : '')
+            (place[0].street != null ? ' st.' : '') + ', ' + (place[0].city != null ? place[0].city : '') + ' ' + 
+            (place[0].region != null ? place[0].region : '') + ', ' + (place[0].country != null ? place[0].country : '')
         let address = {...place[0], complete: complete}
         locationAddress = address
     }
