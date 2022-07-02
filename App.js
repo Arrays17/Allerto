@@ -3,9 +3,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FirebaseAppCheckTypes } from '@react-native-firebase/app-check';
+import appCheck from '@react-native-firebase/app-check';
 
 import Home from './routes/home';
 import AuthScreen from './screens/authScreen';
+
+appCheck().activate('ignore')
 
 const AuthStack = createStackNavigator();
 PushNotification.createChannel({

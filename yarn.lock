@@ -2185,6 +2185,11 @@
   resolved "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.11.tgz"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
+"@react-native-firebase/app-check@^15.1.1":
+  version "15.1.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-check/-/app-check-15.1.1.tgz#f74057da3343405bd55f2098b49976e777c55090"
+  integrity sha512-uLNv+i4IRzGwTZfPVf250TI6BDCb+X4L5/FfBuQu0bPGvbV0oh1Lopv73Of5cjqps+zMmwfTp19UG8CiVw+DNg==
+
 "@react-native-firebase/app@^14.9.4":
   version "14.9.4"
   resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-14.9.4.tgz"
