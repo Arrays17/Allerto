@@ -8,7 +8,7 @@ export const requestContactsPermission = async () => {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
             {
                 title: "Allerto App Contacts Permission",
-                message: "Allerto tracking feature needs to access your contacts for you to select your recipient.",
+                message: "Allerto Location Tracking needs to access your contacts for you to select your recipient.",
                 buttonNeutral: "Ask me later",
                 buttonNegative: "Deny",
                 buttonPositive: "OK"

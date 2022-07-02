@@ -227,14 +227,14 @@ export default function Tracking({route}) {
 
     Alert.alert(
       "Location Tracking Started",
-      "Allerto App will now keep track of your device' location and send location updates to your chosen recipient.\n\n" +
-      "Keep this app running on background. Closing the application may terminate location tracking",
+      "Allerto App will now keep track of your device' location and send location updates (every 100-meter difference) to your chosen recipient.\n\n" +
+      "Keep this app running on background. Closing the application may terminate location tracking\n",
       [{text: "Close"}]
     )
   }
 
   const handleContactsPermission = async (mounted) => {
-    if (contactsPermission != null) return
+    if (contactsPermission != null && contactsPermission == 'granted') return
 
     isPermissionRequest.current = true
 
@@ -242,6 +242,7 @@ export default function Tracking({route}) {
     
     isPermissionRequest.current = false
 
+    console.log('Granted?', granted, 'setContactsPermission?', granted != contactsPermission && mounted);
     if (granted != contactsPermission && mounted)
       setContactsPermission(granted)
 
@@ -279,9 +280,8 @@ export default function Tracking({route}) {
   }
 
   async function openModal() {
-    await handleContactsPermission().then(()=>{
-      setModalVisible(true)
-    })
+    await handleContactsPermission(true)
+    setModalVisible(true)
   }
 
   const turnOnGPS = async () => {
