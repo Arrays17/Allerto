@@ -76,7 +76,7 @@ const checkPhivolcsDB = async (userRef) => {
         }
 
         const earthquakesDB = alertsDB.collection('earthquakes')
-        const earthquakeDocs = (await earthquakesDB.orderBy('dateTime', 'desc').limit(10).get()).docs
+        const earthquakeDocs = (await earthquakesDB.orderBy('createdAt', 'desc').limit(10).get()).docs
 
         for (let doc of earthquakeDocs) {
             const earthquakeID = doc.id
