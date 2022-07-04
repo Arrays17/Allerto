@@ -43,8 +43,9 @@ export default function emergency_favorites(key) {
     setFetching(false)
   }, [])
 
-  useEffect(() => {
+  useEffect( () => {
     let mounted = true
+
 
     if (!fetching && mounted){
       if (!mounted) return
@@ -81,7 +82,7 @@ export default function emergency_favorites(key) {
     let List = await favoritesController.getFavorites(storeKey)
     if (!List || List?.length == 0 ) return setFetching(false)
 
-    if (favoriteList.length > 0 && List.length != favoriteList.length && mounted == true) // Exisiting Favorite List
+    if (favoriteList.length > 0 && List.length != favoriteList.length && mounted == true) // Existing Favorite List
       setFavoriteList(List)
 
     if (favoriteList.length === 0 && mounted) {
@@ -92,13 +93,21 @@ export default function emergency_favorites(key) {
     setFetching(false)
   }
 
-  const fetchTimer = (mounted) => timeOuts.push(setTimeout(() => getFavoritesList(mounted), 1000))
+  const fetchTimer = (mounted) => {
+    const timer = setTimeout(getFavoritesList(mounted), 1000)
+    timeOuts.push(timer)
+  }
 
-  const loadingTimer = (mounted) => timeOuts.push(setTimeout(() => {
+  const loadingTimer = (mounted) => {
+    const timer = setTimeout(handleLoadingText(mounted), 5000)
+    timeOuts.push(timer)
+  }
+
+  const handleLoadingText = (mounted) => {
     if (favoriteList.length == 0 && mounted) {
       setStatusText("No " + stationName + " contact added to favorites...")
     }
-  }, 5000))
+  }
 
   const renderItem = ({item}) => (
     <ListItem 
