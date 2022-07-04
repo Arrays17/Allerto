@@ -14,7 +14,8 @@ export const updateUserLastKnownLocation = async (uid, locationData) => {
     await usersDB.doc(uid).update({
         lastKnownLocation: {
             location: new Firestore.GeoPoint(locationData.latitude, locationData.longitude),
-            address: locationData.address
+            address: locationData.address,
+            createdAt: Firestore.FieldValue.serverTimestamp()
         }
     })
     .then(()=> {

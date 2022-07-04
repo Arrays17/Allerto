@@ -152,8 +152,13 @@ export const createAndUpdateLastKnownLocation = async (location) => {
 
     const newLocalUserData = {
         ...user,
-        lastKnownLocation: locationData
+        lastKnownLocation: {
+            ...locationData,
+            createdAt: new Date(Date.now()).toISOString()
+        }
     }
+
+    console.log(newLocalUserData);
 
     await updateUserLastKnownLocation(user.uid, locationData)
     await updateUserLocalData(newLocalUserData)
