@@ -11,8 +11,7 @@ const TrackerController = require('../controllers/trackerController')
 const s = require('../styles/styles');
 
 
-export default function Tracking({route}) {
-  const appState = useRef('active')
+export default function Tracking() {
   const isPermissionRequest = useRef(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [trackingDetails, setTrackingDetails] = useState(null);
@@ -62,7 +61,6 @@ export default function Tracking({route}) {
     }) */
 
     return () => {
-      //trackingListener.remove()
       mounted = false
     }
   }, [])

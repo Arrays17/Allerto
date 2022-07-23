@@ -85,13 +85,18 @@ const checkPhivolcsDB = async (userRef) => {
             const earthquakeLocation = doc.get('location')
             const distanceBetUserAndEarthquake = getDistanceUsingLatLng(userLocation.latitude, userLocation.longitude, earthquakeLocation.latitude, earthquakeLocation.longitude)
             const distanceKM = parseFloat(distanceBetUserAndEarthquake.kilometers)
-            console.log(distanceKM);
 
             let range
-            if (earthquakeMagnitude < 4.5) {
-                range = 80
+            if (earthquakeMagnitude < 4.0) {
+                range = 60
+            } else if (earthquakeMagnitude < 4.5) {
+                range = 100
+            } else if (earthquakeMagnitude < 5.0) {
+                range = 180
             } else if (earthquakeMagnitude < 5.5) {
-                range = 450
+                range = 300
+            } else if (earthquakeMagnitude < 6.0) {
+                range = 500
             } else if (earthquakeMagnitude < 6.5) {
                 range = 1000
             } else {

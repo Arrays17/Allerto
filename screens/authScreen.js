@@ -20,7 +20,7 @@ export default function AuthScreen({navigation}) {
                 console.log(error.message)
                 setErrorMsg('Invalid Phone Number')
             });
-        confirmation ? setErrorMsg(null) : null // Clear Error Message on Verified Phone Number
+        confirmation ? setErrorMsg(null) : null
         setConfirm(confirmation)
     }
 

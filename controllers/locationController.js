@@ -23,7 +23,11 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({data: {locations}, error}) =>
         .catch((err)=> {console.log('Error on Creating and Updating User\'s Last Known Location:', err)})
 
     if (location) {
-        const {phoneNumber: sender} = user
+        const {phoneNumber, lastKnownLocation} = user
+        const sender = {
+            number: phoneNumber,
+            address: lastKnownLocation.address
+        }
         const {recipient, trackingID} = await TrackerController.getTrackingDetails()
         const trackingData = {
             location: {

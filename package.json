@@ -60,6 +60,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "jetifier": "^2.0.0",
     "react-native-svg-transformer": "^1.0.0"
   },
   "private": true

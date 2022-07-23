@@ -1,8 +1,7 @@
-
 export const sendMessage = async (sender, recipient, location) => {
     const {latitude, longitude} = location
-    const messageContent = "Allerto App user with phoneNo" + sender + " wants to share their location with you." +
-        " Their current location: maps.google.com/?q=" + latitude + "," + longitude
+    const messageContent = `Allerto App user with phoneNo ${sender.number}  wants to share their location with you.` +
+        `Their current location:\n${sender.address}\nmaps.google.com/?q=${latitude},${longitude}`
 
     fetch(`https://allerto-server.herokuapp.com/send-text?recipient=${recipient}&messageContent=${messageContent}`)
         .then((res)=> {
@@ -15,5 +14,3 @@ export const sendMessage = async (sender, recipient, location) => {
             console.warn("Sending SMS Error:", err)
         })
 }
-
-

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const StorageController = require('../utils/asyncStorageController')
 
 export async function getFavorites(key) {

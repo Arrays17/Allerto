@@ -125,6 +125,7 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    ndkVersion "24.0.8215888"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -135,8 +136,8 @@ android {
         applicationId 'com.allerto'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0.2"
+        versionCode 2
+        versionName "1.0.5"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
     }
     splits {
@@ -172,8 +173,12 @@ android {
             // see https://reactnative.dev/docs/signed-apk-android.
             //signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
-            minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            ndk {
+                debugSymbolLevel = 'FULL'
+            }
         }
     }
 
@@ -200,6 +205,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
